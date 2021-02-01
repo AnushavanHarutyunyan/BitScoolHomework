@@ -4,4 +4,12 @@
     margin-top: 10px;
     border-bottom: 1px solid black;
 }
+.liStyle button {
+    margin-left: 17px;
+}
+
+li .MuiButton-startIcon {
+    margin-left: 0px;
+    margin-right: 0px;
+}
 

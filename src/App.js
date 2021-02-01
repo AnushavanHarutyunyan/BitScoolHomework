@@ -6,11 +6,13 @@ import TodoItem from './componets/TodoItem';
 import { v4 as uuidv4 } from 'uuid';
 import '../src/App.css';
 import '../src/SelectStyle.css';
+import EditModal from './componets/EditModal';
 
 class App extends React.Component {
     state = {
         inputValue: '',
         listItem: [],
+        editedItem: null,
     };
 
     onInputChange = (event) => {
@@ -18,12 +20,18 @@ class App extends React.Component {
     };
 
     deleteItem = (deletedItemId) => {
-        
         console.log(deletedItemId);
         this.setState({
             listItem: this.state.listItem.filter(
                 (item) => item.id !== deletedItemId
             ),
+        });
+    };
+
+    onEdite = (itemId) => {
+        //console.log(itemId)
+        this.setState({
+            editedItem: this.state.listItem.find((item) => item.id === itemId),
         });
     };
 
@@ -47,6 +55,7 @@ class App extends React.Component {
                 data={item}
                 state={this.state.listItem}
                 onDelete={this.deleteItem}
+                onEdite={this.onEdite}
             />
         );
     };
@@ -82,7 +91,13 @@ class App extends React.Component {
                     </Button>
                 </div>
                 <div>
-                    {this.state.listItem.map((item) => this.renderItem(item))}
+                    {this.state.listItem.map((item) => {
+                        //console.log(item);
+                        return this.renderItem(item);
+                    })}
+                    {!!this.state.editedItem && (
+                        <EditModal data={this.state.editedItem} />
+                    )}
                 </div>
             </>
         );
