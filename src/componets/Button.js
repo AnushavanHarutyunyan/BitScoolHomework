@@ -35,7 +35,6 @@ class ButtonComp extends React.Component {
 
     addBtn = () => {
         this.setState({ name: '' });
-        console.log('asd');
     };
 
     render() {
