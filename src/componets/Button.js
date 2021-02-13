@@ -27,6 +27,8 @@ class ButtonComp extends React.Component {
         }
     };
 
+
+    
     onChangeValue = (e) => {
         this.setState({ name: e.target.value });
     };
