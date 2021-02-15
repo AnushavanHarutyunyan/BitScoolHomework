@@ -27,16 +27,18 @@ class ButtonComp extends React.Component {
         }
     };
 
-
-
     onChangeValue = (e) => {
         this.setState({ name: e.target.value });
     };
 
     addBtn = () => {
         this.setState({ name: '' });
-        console.log('asd');
     };
+
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/posts').then(response => 
+        console.log(response.json()))
+    }
 
     render() {
         return (
