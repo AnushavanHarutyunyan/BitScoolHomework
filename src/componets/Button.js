@@ -27,8 +27,6 @@ class ButtonComp extends React.Component {
         }
     };
 
-
-
     onChangeValue = (e) => {
         this.setState({ name: e.target.value });
     };
@@ -36,6 +34,11 @@ class ButtonComp extends React.Component {
     addBtn = () => {
         this.setState({ name: '' });
     };
+
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/posts').then(response => 
+        console.log(response.json()))
+    }
 
     render() {
         return (
