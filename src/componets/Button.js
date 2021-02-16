@@ -1,12 +1,14 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Input from '@material-ui/core/Input';
-import CostomSnackbar from './SnackBar';
+import InputGroup from './Input';
+// import CostomSnackbar from './SnackBar';
 
 class ButtonComp extends React.Component {
     state = {
         corrent: 0,
         name: '',
+        firstName: '',
+        age: '',
     };
 
     increment = () => {
@@ -23,12 +25,13 @@ class ButtonComp extends React.Component {
         if (this.state.corrent > 0) {
             this.setState({ corrent: this.state.corrent - 1 });
         } else {
-            return <CostomSnackbar />;
         }
     };
 
     onChangeValue = (e) => {
+        console.log(e);
         this.setState({ name: e.target.value });
+        //console.log(this.state);
     };
 
     addBtn = () => {
@@ -36,21 +39,31 @@ class ButtonComp extends React.Component {
     };
 
     componentDidMount() {
-        fetch('https://jsonplaceholder.typicode.com/posts').then(response => 
-        console.log(response.json()))
+        fetch('https://jsonplaceholder.typicode.com/posts').then((response) =>
+            console.log(response.json())
+        );
     }
 
     render() {
         return (
             <>
                 <div>
-                    <Input
+                    {/* <Input
                         placeholder="name"
                         onChange={this.onChangeValue}
                         value={this.state.name}
+                    /> */}
+                    <InputGroup
+                        onChange={this.onChangeValue}
+                        value={this.state}
                     />
-                    <CostomSnackbar />
-                    <Button onClick={this.addBtn}>Add</Button>
+                    <Button
+                        onClick={this.addBtn}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Subbmit
+                    </Button>
                 </div>
                 <h1>{this.state.corrent}</h1>
                 <div>

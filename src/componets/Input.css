@@ -1,0 +1,5 @@
+.div > div{
+    display: block;
+    width: 40%;
+    margin-bottom: 7px;
+}
