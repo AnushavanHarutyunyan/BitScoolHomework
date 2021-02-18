@@ -1,13 +1,14 @@
 export default function B(props) {
-    // const onClick = () => {
-    //     console.log('Click');
-    // };
+    debugger
+    const onClick = () => {
+        console.log('OnClick function');
+    };
 
     const funcSub = (props) => {
-        const { func } = props.func;
-        console.log(props);
-        //func(onClick);
+        const {funcA} = props;
+        funcA(onClick);
+        //console.log('B components console')
     };
-    funcSub(props);
+    //funcSub(props);
     return <h1>B component</h1>;
 }
