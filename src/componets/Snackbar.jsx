@@ -16,9 +16,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CostomSnackbar() {
+export default function CustomizedSnackbars(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const { handleSub } = props;
+
+    console.log(handleSub);
 
     const handleClick = () => {
         setOpen(true);
@@ -32,8 +35,17 @@ export default function CostomSnackbar() {
         setOpen(false);
     };
 
+    const handleSubm = () => {
+        handleSub(handleClick());
+    };
+
+    handleSubm();
+
     return (
         <div className={classes.root}>
+            {/* <Button variant="outlined" onClick={handleClick}>
+                Open success snackbar
+            </Button> */}
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
                     This is an error message!

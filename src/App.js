@@ -1,13 +1,12 @@
 import React from 'react';
-import ButtonComp from './componets/Button';
+import AddNewTask from './componets/AddNewTask'
 import '../src/App.css';
-import '../src/SelectStyle.css';
 
 class App extends React.Component {
     render() {
         return (
             <>
-                <ButtonComp />
+                <AddNewTask />
             </>
         );
     }
