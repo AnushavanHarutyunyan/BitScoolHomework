@@ -1,20 +1,22 @@
 import React from 'react';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import CustomizedSnackbars from './Snackbar';
 import A from './a';
 import '../componets/AddNewTask.css';
+import Todo from './Todo';
 
 class AddNewTask extends React.Component {
-    state = {
-        inputValue: [],
-        value: '',
-        isVisible: null,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: [],
+            value: '',
+        };
+    }
 
-    handleSubmit = (openSnackbar, closeSnackbar) => {
-        console.log(openSnackbar);
-        //openSnackbar();
+    funcTodo = () => {
+        const { handleInput } = this.props;
+        console.log(this.props);
     };
 
     addBtn = () => {
@@ -22,8 +24,8 @@ class AddNewTask extends React.Component {
             this.state.inputValue.push(this.state.value);
             this.setState({ value: '' });
         } else {
-            <CustomizedSnackbars handleSub={this.handleSubmit} />;
-            this.setState({ isVisible: <CustomizedSnackbars /> });
+            // <CustomizedSnackbars handleSub={this.handleSubmit} />;
+            // this.setState({ isVisible: <CustomizedSnackbars /> }); uzum em vor datarki jamanak snackbar bacvi
         }
     };
 
@@ -33,7 +35,8 @@ class AddNewTask extends React.Component {
     };
 
     render() {
-        //console.log(this.state);
+        console.log(this.props);
+        
         return (
             <>
                 <div>{this.state.isVisible}</div>
@@ -50,7 +53,7 @@ class AddNewTask extends React.Component {
                         Subbmit
                     </Button>
                 </div>
-                <A />
+                {/* <A /> */}
             </>
         );
     }

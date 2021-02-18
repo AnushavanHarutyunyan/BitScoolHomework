@@ -4,7 +4,7 @@ import B from './b';
 
 export default function A() {
     const onClick = (click) => {
-        click()
+        click();
     };
 
     return (
