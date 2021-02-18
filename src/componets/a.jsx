@@ -1,20 +1,17 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import B from './b';
-import Button from '@material-ui/core/Button';
 
 export default function A() {
-    debugger;
-    const f = (click) => {
-        //console.log(click);
-        click();
+    const onClick = (click) => {
+        click()
     };
+
     return (
         <div>
-            <Button onClick={this.addBtn} variant="contained" color="primary">
-                Subbmit
-            </Button>
-            <B funcA={f} />
+            <h1>A component</h1>
+            <button onClick={onClick}>A compo</button>
+            <B funcA={onClick} />
         </div>
     );
 }
