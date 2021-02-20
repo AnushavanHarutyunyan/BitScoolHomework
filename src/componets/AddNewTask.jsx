@@ -14,10 +14,10 @@ class AddNewTask extends React.Component {
 
     funcTodo = () => {
         const { todoF } = this.props;
-        todoF(this.state.inputValue)
+        todoF(this.state.inputValue);
     };
 
-    addBtn = () => {
+    submitBtn = () => {
         if (this.state.value) {
             this.state.inputValue.push(this.state.value);
             this.funcTodo();
@@ -33,6 +33,12 @@ class AddNewTask extends React.Component {
         this.setState({ value });
     };
 
+    onKeyPress = (event) => {
+        if (event.charCode === 13) {
+            this.submitBtn();
+        }
+    };
+
     render() {
         return (
             <>
@@ -40,10 +46,11 @@ class AddNewTask extends React.Component {
                 <div className="inputDiv">
                     <Input
                         onChange={this.handleChange}
+                        onKeyPress={this.onKeyPress}
                         value={this.state.value}
                     />
                     <Button
-                        onClick={this.addBtn}
+                        onClick={this.submitBtn}
                         variant="contained"
                         color="primary"
                     >
