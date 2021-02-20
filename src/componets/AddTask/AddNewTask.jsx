@@ -1,13 +1,13 @@
 import React from 'react';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import '../componets/AddNewTask.css';
+import '../AddTask/AddNewTask.css';
 
 class AddNewTask extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: [1515],
+            inputValue: [],
             value: '',
         };
     }
@@ -42,7 +42,7 @@ class AddNewTask extends React.Component {
     render() {
         return (
             <>
-                <div>{this.state.isVisible}</div>
+                <h1>Todo-List</h1>
                 <div className="inputDiv">
                     <Input
                         onChange={this.handleChange}
