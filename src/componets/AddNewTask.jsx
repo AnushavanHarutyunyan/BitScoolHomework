@@ -1,27 +1,26 @@
 import React from 'react';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import A from './a';
 import '../componets/AddNewTask.css';
-import Todo from './Todo';
 
 class AddNewTask extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: [],
+            inputValue: [1515],
             value: '',
         };
     }
 
     funcTodo = () => {
-        const { handleInput } = this.props;
-        console.log(this.props);
+        const { todoF } = this.props;
+        todoF(this.state.inputValue)
     };
 
     addBtn = () => {
         if (this.state.value) {
             this.state.inputValue.push(this.state.value);
+            this.funcTodo();
             this.setState({ value: '' });
         } else {
             // <CustomizedSnackbars handleSub={this.handleSubmit} />;
@@ -35,8 +34,6 @@ class AddNewTask extends React.Component {
     };
 
     render() {
-        console.log(this.props);
-        
         return (
             <>
                 <div>{this.state.isVisible}</div>

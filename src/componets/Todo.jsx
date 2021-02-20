@@ -6,11 +6,16 @@ export default class Todo extends React.Component {
         inputValue: '',
     };
 
-    handleInput =(value)=>{
-        
-    }
+    handleInput = (value) => {
+        this.setState({ inputValue: value });
+    };
 
     render() {
-        return <AddNewTask todoF='this.handleInput'/>;
+        return (
+            <>
+                <AddNewTask todoF={this.handleInput} />
+                {this.state.inputValue && <h3>{this.state.inputValue}</h3>}
+            </>
+        );
     }
 }
