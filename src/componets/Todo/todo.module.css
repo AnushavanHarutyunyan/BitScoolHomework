@@ -1,0 +1,7 @@
+.col {
+    display: flex;
+    box-sizing: content-box;
+}
+.row {
+    box-sizing: content-box;
+}

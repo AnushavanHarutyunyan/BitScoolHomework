@@ -7,8 +7,7 @@ class AddNewTask extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: [],
-            value: '',
+            inputValue: '',
         };
     }
 
@@ -18,10 +17,9 @@ class AddNewTask extends React.Component {
     };
 
     submitBtn = () => {
-        if (this.state.value) {
-            this.state.inputValue.push(this.state.value);
+        if (this.state.inputValue) {
             this.funcTodo();
-            this.setState({ value: '' });
+            this.setState({ inputValue: '' });
         } else {
             // <CustomizedSnackbars handleSub={this.handleSubmit} />;
             // this.setState({ isVisible: <CustomizedSnackbars /> }); uzum em vor datarki jamanak snackbar bacvi
@@ -30,7 +28,7 @@ class AddNewTask extends React.Component {
 
     handleChange = (event) => {
         const { value } = event.target;
-        this.setState({ value });
+        this.setState({ inputValue: value });
     };
 
     onKeyPress = (event) => {
@@ -42,12 +40,14 @@ class AddNewTask extends React.Component {
     render() {
         return (
             <>
-                <h1>Todo-List</h1>
+                <h1 className="h1Div">Todo-List-App</h1>
+
                 <div className="inputDiv">
                     <Input
                         onChange={this.handleChange}
                         onKeyPress={this.onKeyPress}
-                        value={this.state.value}
+                        value={this.state.inputValue}
+                        placeholder="Add Task"
                     />
                     <Button
                         onClick={this.submitBtn}

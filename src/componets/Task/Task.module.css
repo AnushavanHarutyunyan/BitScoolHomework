@@ -6,11 +6,27 @@
     font-size: 20px;
     text-decoration: line-through;
 }
+
 .task {
+    align-items: center;
+    display: flex;
+    border-radius: 10px;
     padding: 10px 10px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     font-size: 20px;
-    background-color: #cec1bc;
+    background-color: #b1b5cc;
     font-size: 20px;
-    padding: 10px 10px;
+    box-sizing: content-box;
+}
+
+.btn {
+    margin-left: 18px;
+}
+
+.checkBox {
+    margin: 0px 0px 0px 20px;
+}
+.checkBox > input {
+    width: 20px;
+    height: 20px;
 }
