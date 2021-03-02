@@ -21,8 +21,6 @@ class AddNewTask extends React.Component {
             this.funcTodo();
             this.setState({ inputValue: '' });
         } else {
-            // <CustomizedSnackbars handleSub={this.handleSubmit} />;
-            // this.setState({ isVisible: <CustomizedSnackbars /> }); uzum em vor datarki jamanak snackbar bacvi
         }
     };
 
@@ -38,21 +36,23 @@ class AddNewTask extends React.Component {
     };
 
     render() {
+        const { checkedTasks } = this.props;
         return (
             <>
                 <h1 className="h1Div">Todo-List-App</h1>
-
                 <div className="inputDiv">
                     <Input
                         onChange={this.handleChange}
                         onKeyPress={this.onKeyPress}
                         value={this.state.inputValue}
                         placeholder="Add Task"
+                        disabled={!!checkedTasks}
                     />
                     <Button
                         onClick={this.submitBtn}
                         variant="contained"
                         color="primary"
+                        disabled={!!checkedTasks}
                     >
                         Subbmit
                     </Button>

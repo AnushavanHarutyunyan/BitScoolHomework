@@ -1,7 +1,7 @@
 .col {
-    display: flex;
-    box-sizing: content-box;
+    flex-basis: auto;
 }
+
 .row {
-    box-sizing: content-box;
+    justify-content: center;
 }

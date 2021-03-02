@@ -16,7 +16,6 @@
     font-size: 20px;
     background-color: #b1b5cc;
     font-size: 20px;
-    box-sizing: content-box;
 }
 
 .btn {
@@ -24,9 +23,24 @@
 }
 
 .checkBox {
-    margin: 0px 0px 0px 20px;
+    margin-left: auto;
 }
+
 .checkBox > input {
     width: 20px;
     height: 20px;
+}
+
+.showBorderStyle {
+    align-items: center;
+    display: flex;
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    background-color: #b1b5cc;
+    font-size: 20px;
+
+    border: 12px solid;
+    border-color: rgb(0 0 0 / 10%);
 }
