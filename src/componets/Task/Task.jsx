@@ -4,13 +4,26 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import Form from 'react-bootstrap/Form';
 import styles from './Task.module.css';
 
-const Task = ({ task, deletItem, handleCheked, checkedTasks, isChecked }) => {
+const Task = ({
+    task,
+    deletItem,
+    handleCheked,
+    checkedTasks,
+    isChecked,
+    showEditeComp,
+    EditedTask,
+}) => {
     const handleDelet = () => {
         deletItem(task._id);
     };
 
     const checkedToggle = () => {
         handleCheked(task._id);
+    };
+
+    const handleClickEditer = () => {
+        showEditeComp();
+        EditedTask(task._id);
     };
 
     return (
@@ -26,6 +39,7 @@ const Task = ({ task, deletItem, handleCheked, checkedTasks, isChecked }) => {
                 variant="warning"
                 className={styles.btn}
                 disabled={checkedTasks.size}
+                onClick={handleClickEditer}
             >
                 <FontAwesomeIcon icon={faEdit} />
             </Button>

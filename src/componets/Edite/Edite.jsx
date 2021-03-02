@@ -8,29 +8,39 @@ class Edite extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
-            show: false,
+            editedValue: '',
+            show: true,
         };
     }
 
-    handleClose = () => {};
-    handleShow = () => {
-        console.log('exav');
-        this.setState({ show: !this.state.show });
+    handleChange = ({ target }) => {
+        const value = target.value;
+        this.setState({ editedValue: value });
     };
 
-    funcProps = () => {
-        this.props.handleEditModal(this.handleShow);
+    handleSave = () => {
+        this.props.saveEditedValue(this.state.editedValue);
+        this.setState({ editedValue: '' });
+        this.handleClose();
     };
+
+    handleClose = () => {
+        this.setState({ show: false });
+        this.props.showEditeComp(this.state.show);
+    };
+
     render() {
         return (
             <>
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Edited Task</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <InputGroup className="mb-3">
+                        <InputGroup
+                            className="mb-3"
+                            onChange={this.handleChange}
+                        >
                             <FormControl aria-label="Text input with checkbox" />
                         </InputGroup>
                     </Modal.Body>
@@ -38,7 +48,7 @@ class Edite extends React.Component {
                         <Button variant="secondary" onClick={this.handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={this.handleClose}>
+                        <Button variant="primary" onClick={this.handleSave}>
                             Save Changes
                         </Button>
                     </Modal.Footer>
