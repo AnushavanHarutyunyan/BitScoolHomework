@@ -15,6 +15,8 @@ export default class Todo extends React.Component {
         ],
         checkedTasks: new Set(),
         editeComp: false,
+        editedTask: null,
+        editedTaskIndx: null,
     };
 
     handleInput = (value) => {
@@ -55,7 +57,6 @@ export default class Todo extends React.Component {
         this.setState({ editeComp: !show });
     };
 
-    Task = null;
     // TaskIndx = null;
 
     EditedTask = (taskId) => {
@@ -63,20 +64,18 @@ export default class Todo extends React.Component {
         // let editedTaskIndx = this.state.tasks.findIndex(
         //     (item) => item._id === taskId
         // );
-        //clone em arel
-        // let cloneEditedTaskObj = Object.assign({}, editedTask);
-        // this.Task = cloneEditedTaskObj;
-        //aranc cloni ashxatum e
-        this.Task = editedTask;
+        this.setState({ editedTask });
         // this.TaskIndx = editedTaskIndx;
     };
-    saveEditedValue = (editedValue) => {
-        let task = this.Task;
-        // let taskIdx = this.TaskIndx;
 
-        task.value = editedValue;
-        // this.setState({ tasks: (this.state.tasks[taskIdx].value = task) });
+    saveEditedValue = (editedValue) => {
+        this.state.editedTask.value = editedValue;
+        // this.setState({editedTask: 5})
+        // let editedTask = this.state;
+        // let changedTask = (editedTask.value = editedValue);
+        // this.setState({ editedTask: changedTask });
     };
+
     renderTasks = (item) => {
         return (
             <Col key={item._id} className={styles.col}>
@@ -94,6 +93,7 @@ export default class Todo extends React.Component {
     };
 
     render() {
+        // console.log('render');
         return (
             <Container>
                 <Row>

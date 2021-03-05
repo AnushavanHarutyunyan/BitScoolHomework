@@ -30,6 +30,7 @@ class Edite extends React.Component {
     };
 
     render() {
+        // console.log('render Edite');
         return (
             <>
                 <Modal show={this.state.show} onHide={this.handleClose}>
