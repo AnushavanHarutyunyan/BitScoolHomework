@@ -5,3 +5,11 @@
 .row {
     justify-content: center;
 }
+
+.delete_task {
+    float: right;
+}
+.btn_checked_all_tasks {
+    float: right;
+    margin-right: 25px;
+}

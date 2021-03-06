@@ -12,6 +12,7 @@ const Task = ({
     isChecked,
     showEditeComp,
     EditedTask,
+    checked,
 }) => {
     const handleDelet = () => {
         deletItem(task._id);
@@ -34,6 +35,7 @@ const Task = ({
                 type={'checkbox'}
                 id={`default-checkbox`}
                 onChange={checkedToggle}
+                checked={checked}
             />
             <Button
                 variant="warning"

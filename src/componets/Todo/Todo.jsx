@@ -13,10 +13,10 @@ export default class Todo extends React.Component {
             { _id: uuidv4(), value: 2 },
             { _id: uuidv4(), value: 3 },
         ],
+        isAllcheckedTasks: false,
         checkedTasks: new Set(),
         editeComp: false,
         editedTask: null,
-        editedTaskIndx: null,
     };
 
     handleInput = (value) => {
@@ -38,8 +38,8 @@ export default class Todo extends React.Component {
             checkedTasks.add(taskId);
         } else {
             checkedTasks.delete(taskId);
+            this.setState({ checked: '' });
         }
-        // checkedTasks = checkedTasks.delete((item) => item !== taskId);
 
         this.setState({ checkedTasks });
     };
@@ -57,23 +57,46 @@ export default class Todo extends React.Component {
         this.setState({ editeComp: !show });
     };
 
-    // TaskIndx = null;
-
     EditedTask = (taskId) => {
         let editedTask = this.state.tasks.find((item) => item._id === taskId);
+        //indexnem gtnum
         // let editedTaskIndx = this.state.tasks.findIndex(
         //     (item) => item._id === taskId
         // );
-        this.setState({ editedTask });
         // this.TaskIndx = editedTaskIndx;
+        this.setState({ editedTask });
     };
 
     saveEditedValue = (editedValue) => {
-        this.state.editedTask.value = editedValue;
-        // this.setState({editedTask: 5})
-        // let editedTask = this.state;
-        // let changedTask = (editedTask.value = editedValue);
-        // this.setState({ editedTask: changedTask });
+        let { tasks, editedTask } = this.state;
+        if (editedValue) {
+            this.setState({
+                tasks: [
+                    ...tasks.slice(0, tasks.indexOf(editedTask)),
+                    { ...editedTask, value: editedValue },
+                    ...tasks.slice(tasks.indexOf(editedTask) + 1),
+                ],
+            });
+        } else {
+        }
+    };
+
+    handleCheckedAllTasks = () => {
+        let { tasks, checkedTasks, isAllcheckedTasks } = this.state;
+        const allTasks = tasks;
+        if (tasks.length !== checkedTasks.size) {
+            allTasks.forEach((item) =>
+                this.setState({
+                    checkedTasks: checkedTasks.add(item._id),
+                })
+            );
+            this.setState({
+                isAllcheckedTasks: !!checkedTasks,
+            });
+        } else {
+            checkedTasks.clear();
+            this.setState({ isAllcheckedTasks: !isAllcheckedTasks });
+        }
     };
 
     renderTasks = (item) => {
@@ -87,13 +110,17 @@ export default class Todo extends React.Component {
                     isChecked={this.state.checkedTasks.has(item._id)}
                     EditedTask={this.EditedTask}
                     showEditeComp={this.showEditeComp}
+                    checked={
+                        this.state.checkedTasks.has(item._id)
+                            ? 'checked'
+                            : false
+                    }
                 />
             </Col>
         );
     };
 
     render() {
-        // console.log('render');
         return (
             <Container>
                 <Row>
@@ -118,11 +145,21 @@ export default class Todo extends React.Component {
                     <Col>
                         <Button
                             variant="danger"
-                            className="float-right"
+                            className={styles.delete_task}
                             onClick={this.handleDeleteCheckedTasks}
                             disabled={!this.state.checkedTasks.size}
                         >
                             Delete Tasks
+                        </Button>
+                        <Button
+                            className={styles.btn_checked_all_tasks}
+                            variant="primary"
+                            onClick={this.handleCheckedAllTasks}
+                        >
+                            {this.state.tasks.length ===
+                            this.state.checkedTasks.size
+                                ? 'Delete All Tasks'
+                                : 'Checked All Tasks'}
                         </Button>
                     </Col>
                 </Row>
@@ -130,6 +167,7 @@ export default class Todo extends React.Component {
                     <Edite
                         showEditeComp={this.showEditeComp}
                         saveEditedValue={this.saveEditedValue}
+                        editedTask={this.state.editedTask}
                     />
                 ) : (
                     false

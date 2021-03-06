@@ -8,7 +8,7 @@ class Edite extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editedValue: '',
+            editedValue: this.props.editedTask.value,
             show: true,
         };
     }
@@ -18,9 +18,14 @@ class Edite extends React.Component {
         this.setState({ editedValue: value });
     };
 
+    onKeyPress = (event) => {
+        if (event.charCode === 13) {
+            this.handleSave();
+        }
+    };
+
     handleSave = () => {
         this.props.saveEditedValue(this.state.editedValue);
-        this.setState({ editedValue: '' });
         this.handleClose();
     };
 
@@ -30,7 +35,6 @@ class Edite extends React.Component {
     };
 
     render() {
-        // console.log('render Edite');
         return (
             <>
                 <Modal show={this.state.show} onHide={this.handleClose}>
@@ -40,9 +44,13 @@ class Edite extends React.Component {
                     <Modal.Body>
                         <InputGroup
                             className="mb-3"
-                            onChange={this.handleChange}
+                            onKeyPress={this.onKeyPress}
                         >
-                            <FormControl aria-label="Text input with checkbox" />
+                            <FormControl
+                                aria-label="Text input with checkbox"
+                                onChange={this.handleChange}
+                                value={this.state.editedValue}
+                            />
                         </InputGroup>
                     </Modal.Body>
                     <Modal.Footer>
