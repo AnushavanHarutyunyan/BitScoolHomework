@@ -3,7 +3,7 @@ import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import '../AddTask/AddNewTask.css';
 
-class AddNewTask extends React.Component {
+class AddNewTask extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { FormControl } from 'react-bootstrap';
 
-class Edite extends React.Component {
+class Edite extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {

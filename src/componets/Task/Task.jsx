@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +28,7 @@ const Task = ({
         EditedTask(task._id);
     };
 
+    console.log('render tasks');
     return (
         <div className={isChecked ? styles.showBorderStyle : styles.task}>
             <p>Task - {task.value}</p>
@@ -57,4 +59,4 @@ const Task = ({
     );
 };
 
-export default Task;
+export default memo(Task);
