@@ -6,7 +6,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import styles from './todo.module.css';
 import Edite from '../Edite/Edite';
 
-export default class Todo extends React.PureComponent {
+export default class Todo extends React.Component {
     state = {
         tasks: [
             { _id: uuidv4(), value: 1 },
