@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import Form from 'react-bootstrap/Form';
 import styles from './Task.module.css';
+import { PropTypes } from 'prop-types';
 
 const Task = ({
     task,
@@ -13,7 +14,6 @@ const Task = ({
     isChecked,
     showEditeComp,
     EditedTask,
-    checked,
 }) => {
     const handleDelet = () => {
         deletItem(task._id);
@@ -37,7 +37,7 @@ const Task = ({
                 type={'checkbox'}
                 id={`default-checkbox`}
                 onChange={checkedToggle}
-                checked={checked}
+                checked={isChecked}
             />
             <Button
                 variant="warning"
@@ -57,6 +57,16 @@ const Task = ({
             </Button>
         </div>
     );
+};
+
+Task.propTypes = {
+    task: PropTypes.object,
+    deletItem: PropTypes.func,
+    handleCheked: PropTypes.func,
+    checkedTasks: PropTypes.instanceOf(Set),
+    isChecked: PropTypes.bool,
+    EditedTask: PropTypes.func,
+    showEditeComp: PropTypes.func,
 };
 
 export default memo(Task);

@@ -2,6 +2,7 @@ import React from 'react';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import '../AddTask/AddNewTask.css';
+import PropTypes from 'prop-types';
 
 class AddNewTask extends React.PureComponent {
     constructor(props) {
@@ -54,7 +55,7 @@ class AddNewTask extends React.PureComponent {
                         color="primary"
                         disabled={!!checkedTasks}
                     >
-                        Subbmit
+                        Add Task
                     </Button>
                 </div>
                 {/* <A /> */}
@@ -62,5 +63,10 @@ class AddNewTask extends React.PureComponent {
         );
     }
 }
+
+AddNewTask.propTypes = {
+    todoF: PropTypes.func,
+    checkedTasks: PropTypes.number,
+};
 
 export default AddNewTask;

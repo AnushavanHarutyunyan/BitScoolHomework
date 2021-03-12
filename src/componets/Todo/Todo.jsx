@@ -110,7 +110,6 @@ export default class Todo extends React.Component {
                     isChecked={checkedTasks.has(item._id)}
                     EditedTask={this.EditedTask}
                     showEditeComp={this.showEditeComp}
-                    checked={checkedTasks.has(item._id) ? 'checked' : false}
                 />
             </Col>
         );

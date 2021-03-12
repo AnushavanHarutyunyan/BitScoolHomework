@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { FormControl } from 'react-bootstrap';
+import { PropTypes } from 'prop-types';
 
 class Edite extends React.PureComponent {
     constructor(props) {
@@ -66,4 +67,11 @@ class Edite extends React.PureComponent {
         );
     }
 }
+
+Edite.propTypes = {
+    showEditeComp: PropTypes.func,
+    saveEditedValue: PropTypes.func,
+    editedTask: PropTypes.instanceOf(Object),
+};
+
 export default Edite;
