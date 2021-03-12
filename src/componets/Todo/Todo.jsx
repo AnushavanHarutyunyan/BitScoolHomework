@@ -9,9 +9,9 @@ import Edite from '../Edite/Edite';
 export default class Todo extends React.Component {
     state = {
         tasks: [
-            { _id: uuidv4(), value: 1 },
-            { _id: uuidv4(), value: 2 },
-            { _id: uuidv4(), value: 3 },
+            { _id: uuidv4(), value: '1' },
+            { _id: uuidv4(), value: '2' },
+            { _id: uuidv4(), value: '3' },
         ],
         checkedTasks: new Set(),
         editeComp: false,

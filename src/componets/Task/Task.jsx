@@ -60,13 +60,16 @@ const Task = ({
 };
 
 Task.propTypes = {
-    task: PropTypes.object,
+    task: PropTypes.shape({
+        _id: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+    }),
     deletItem: PropTypes.func,
-    handleCheked: PropTypes.func,
-    checkedTasks: PropTypes.instanceOf(Set),
-    isChecked: PropTypes.bool,
-    EditedTask: PropTypes.func,
-    showEditeComp: PropTypes.func,
+    handleCheked: PropTypes.func.isRequired,
+    checkedTasks: PropTypes.instanceOf(Set).isRequired,
+    isChecked: PropTypes.bool.isRequired,
+    EditedTask: PropTypes.func.isRequired,
+    showEditeComp: PropTypes.func.isRequired,
 };
 
 export default memo(Task);
