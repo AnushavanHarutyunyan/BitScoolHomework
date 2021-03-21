@@ -12,7 +12,7 @@ const Task = ({
     handleCheked,
     checkedTasks,
     isChecked,
-    showEditeComp,
+    toggleAddEdite,
     EditedTask,
 }) => {
     const handleDelet = () => {
@@ -24,14 +24,13 @@ const Task = ({
     };
 
     const handleClickEditer = () => {
-        showEditeComp();
         EditedTask(task._id);
     };
 
-    console.log('render tasks');
     return (
         <div className={isChecked ? styles.showBorderStyle : styles.task}>
-            <p>Task - {task.value}</p>
+            <p>Task - {task.title}</p>
+            <p>Task - {task.description}</p>
             <Form.Check
                 className={styles.checkBox}
                 type={'checkbox'}
@@ -62,14 +61,13 @@ const Task = ({
 Task.propTypes = {
     task: PropTypes.shape({
         _id: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
     }),
     deletItem: PropTypes.func,
     handleCheked: PropTypes.func.isRequired,
     checkedTasks: PropTypes.instanceOf(Set).isRequired,
     isChecked: PropTypes.bool.isRequired,
     EditedTask: PropTypes.func.isRequired,
-    showEditeComp: PropTypes.func.isRequired,
 };
 
 export default memo(Task);

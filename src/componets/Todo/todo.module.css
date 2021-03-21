@@ -13,3 +13,8 @@
     float: right;
     margin-right: 25px;
 }
+.addTaskBtn {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}

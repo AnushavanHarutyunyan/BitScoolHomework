@@ -1,21 +1,29 @@
 import React from 'react';
-import AddNewTask from '../AddTask/AddNewTask';
+import AddTaskModal from '../AddTask/AddTaskModal';
 import Task from '../Task/Task';
+import Confirm from '../Confirm';
+import EditeTaskModal from '../EditeTaskModal';
 import { v4 as uuidv4 } from 'uuid';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styles from './todo.module.css';
-import Edite from '../Edite/Edite';
 
 export default class Todo extends React.Component {
     state = {
         tasks: [
-            { _id: uuidv4(), value: '1' },
-            { _id: uuidv4(), value: '2' },
-            { _id: uuidv4(), value: '3' },
+            { _id: uuidv4(), title: '1', description: '1' },
+            { _id: uuidv4(), title: '2', description: '2' },
+            { _id: uuidv4(), title: '3', description: '3' },
         ],
         checkedTasks: new Set(),
-        editeComp: false,
+        show: false,
         editedTask: null,
+        isOpenConfirm: false,
+    };
+    toggleOpenConfirm = () => {
+        this.setState({ isOpenConfirm: !this.state.isOpenConfirm });
+    };
+    toggleAddEdite = () => {
+        this.setState({ show: !this.state.show });
     };
 
     handleInput = (value) => {
@@ -52,11 +60,11 @@ export default class Todo extends React.Component {
         });
     };
 
-    showEditeComp = (show) => {
-        if (!show) {
-            this.setState({ editeComp: show });
-        }
-        this.setState({ editeComp: !show });
+    handleEditeTask = (editedTask) => {
+        const tasks = [...this.state.tasks];
+        const indx = tasks.findIndex((item) => item._id === editedTask._id);
+        tasks[indx] = editedTask;
+        this.setState({ tasks });
     };
 
     EditedTask = (taskId) => {
@@ -69,18 +77,14 @@ export default class Todo extends React.Component {
         this.setState({ editedTask });
     };
 
-    saveEditedValue = (editedValue) => {
-        let { tasks, editedTask } = this.state;
-        if (editedValue) {
-            this.setState({
-                tasks: [
-                    ...tasks.slice(0, tasks.indexOf(editedTask)),
-                    { ...editedTask, value: editedValue },
-                    ...tasks.slice(tasks.indexOf(editedTask) + 1),
-                ],
-            });
-        } else {
-        }
+    removeEditedTask = () => {
+        this.setState({ editedTask: null });
+    };
+
+    handleSubmit = (formData) => {
+        const tasks = [...this.state.tasks];
+        tasks.push({ ...formData, _id: uuidv4() });
+        this.setState({ tasks });
     };
 
     handleCheckedAllTasks = () => {
@@ -109,29 +113,35 @@ export default class Todo extends React.Component {
                     checkedTasks={checkedTasks}
                     isChecked={checkedTasks.has(item._id)}
                     EditedTask={this.EditedTask}
-                    showEditeComp={this.showEditeComp}
+                    toggleAddEdite={this.toggleAddEdite}
                 />
             </Col>
         );
     };
 
     render() {
+        const {
+            isOpenConfirm,
+            tasks,
+            checkedTasks,
+            show,
+            editedTask,
+        } = this.state;
         return (
             <Container>
                 <Row>
-                    <Col>
-                        <AddNewTask
-                            todoF={this.handleInput}
-                            checkedTasks={this.state.checkedTasks.size}
-                        />
+                    <Col className={styles.addTaskBtn}>
+                        <Button onClick={this.toggleAddEdite}>
+                            Add Task Modal
+                        </Button>
                     </Col>
                 </Row>
 
                 <Row className={styles.row}>
-                    {this.state.tasks.length === 0 ? (
+                    {tasks.length === 0 ? (
                         <p>there are no taks</p>
                     ) : (
-                        this.state.tasks.map((item) => {
+                        tasks.map((item) => {
                             return this.renderTasks(item);
                         })
                     )}
@@ -141,8 +151,8 @@ export default class Todo extends React.Component {
                         <Button
                             variant="danger"
                             className={styles.delete_task}
-                            onClick={this.handleDeleteCheckedTasks}
-                            disabled={!this.state.checkedTasks.size}
+                            onClick={this.toggleOpenConfirm}
+                            disabled={!checkedTasks.size}
                         >
                             Delete Tasks
                         </Button>
@@ -150,24 +160,39 @@ export default class Todo extends React.Component {
                             className={styles.btn_checked_all_tasks}
                             variant="primary"
                             onClick={this.handleCheckedAllTasks}
-                            disabled={!this.state.tasks.length}
+                            disabled={!tasks.length}
                         >
-                            {this.state.tasks.length ===
-                                this.state.checkedTasks.size &&
-                            this.state.tasks.length !== 0
+                            {tasks.length === checkedTasks.size &&
+                            tasks.length !== 0
                                 ? 'Remove Checked'
                                 : 'Check All'}
                         </Button>
                     </Col>
                 </Row>
-                {this.state.editeComp ? (
-                    <Edite
-                        showEditeComp={this.showEditeComp}
-                        saveEditedValue={this.saveEditedValue}
-                        editedTask={this.state.editedTask}
+                {show ? (
+                    <AddTaskModal
+                        onHide={this.toggleAddEdite}
+                        onSubmit={this.handleSubmit}
+                        editedTask={editedTask}
+                        todoF={this.handleInput}
+                        checkedTasks={checkedTasks.size}
                     />
                 ) : (
                     false
+                )}
+                {isOpenConfirm && (
+                    <Confirm
+                        onHide={this.toggleOpenConfirm}
+                        onSubmit={this.handleDeleteCheckedTasks}
+                        count={checkedTasks.size}
+                    />
+                )}
+                {editedTask && (
+                    <EditeTaskModal
+                        editedTask={editedTask}
+                        onHide={this.removeEditedTask}
+                        onSubmit={this.handleEditeTask}
+                    />
                 )}
             </Container>
         );
