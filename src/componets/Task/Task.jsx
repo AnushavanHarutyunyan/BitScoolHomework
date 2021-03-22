@@ -24,7 +24,7 @@ const Task = ({
     };
 
     const handleClickEditer = () => {
-        EditedTask(task._id);
+        EditedTask(task);
     };
 
     return (

@@ -1,8 +1,7 @@
 import React from 'react';
-import AddTaskModal from '../AddTask/AddTaskModal';
 import Task from '../Task/Task';
 import Confirm from '../Confirm';
-import EditeTaskModal from '../EditeTaskModal';
+import TaskModal from '../TaskModal/TaskModal';
 import { v4 as uuidv4 } from 'uuid';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styles from './todo.module.css';
@@ -19,11 +18,17 @@ export default class Todo extends React.Component {
         editedTask: null,
         isOpenConfirm: false,
     };
+
     toggleOpenConfirm = () => {
         this.setState({ isOpenConfirm: !this.state.isOpenConfirm });
     };
+
     toggleAddEdite = () => {
         this.setState({ show: !this.state.show });
+    };
+
+    toggleSetEditTask = (editedTask = null) => {
+        this.setState({ editedTask });
     };
 
     handleInput = (value) => {
@@ -67,20 +72,6 @@ export default class Todo extends React.Component {
         this.setState({ tasks });
     };
 
-    EditedTask = (taskId) => {
-        let editedTask = this.state.tasks.find((item) => item._id === taskId);
-        //indexnem gtnum
-        // let editedTaskIndx = this.state.tasks.findIndex(
-        //     (item) => item._id === taskId
-        // );
-        // this.TaskIndx = editedTaskIndx;
-        this.setState({ editedTask });
-    };
-
-    removeEditedTask = () => {
-        this.setState({ editedTask: null });
-    };
-
     handleSubmit = (formData) => {
         const tasks = [...this.state.tasks];
         tasks.push({ ...formData, _id: uuidv4() });
@@ -112,7 +103,7 @@ export default class Todo extends React.Component {
                     handleCheked={this.handleCheked}
                     checkedTasks={checkedTasks}
                     isChecked={checkedTasks.has(item._id)}
-                    EditedTask={this.EditedTask}
+                    EditedTask={this.toggleSetEditTask}
                     toggleAddEdite={this.toggleAddEdite}
                 />
             </Col>
@@ -170,12 +161,11 @@ export default class Todo extends React.Component {
                     </Col>
                 </Row>
                 {show ? (
-                    <AddTaskModal
+                    <TaskModal
                         onHide={this.toggleAddEdite}
                         onSubmit={this.handleSubmit}
                         editedTask={editedTask}
                         todoF={this.handleInput}
-                        checkedTasks={checkedTasks.size}
                     />
                 ) : (
                     false
@@ -188,9 +178,9 @@ export default class Todo extends React.Component {
                     />
                 )}
                 {editedTask && (
-                    <EditeTaskModal
+                    <TaskModal
                         editedTask={editedTask}
-                        onHide={this.removeEditedTask}
+                        onHide={this.toggleSetEditTask}
                         onSubmit={this.handleEditeTask}
                     />
                 )}

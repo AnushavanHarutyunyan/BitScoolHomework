@@ -5,13 +5,14 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { FormControl } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
-class AddTaskModal extends React.PureComponent {
+class TaskModal extends React.PureComponent {
     constructor(props) {
         super(props);
         this.inputRef = createRef();
         this.state = {
             title: '',
             description: '',
+            ...props.editedTask,
         };
     }
 
@@ -29,8 +30,7 @@ class AddTaskModal extends React.PureComponent {
         )
             return;
 
-        const formData = { title, description };
-        this.props.onSubmit(formData);
+        this.props.onSubmit(this.state);
         this.props.onHide();
     };
 
@@ -40,12 +40,14 @@ class AddTaskModal extends React.PureComponent {
 
     render() {
         const { title, description } = this.state;
-        const { checkedTasks } = this.props;
+        const { editedTask, onHide } = this.props;
         return (
             <>
                 <Modal show={true} onHide={this.props.onHide}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Add Task Modal</Modal.Title>
+                        <Modal.Title>
+                            {editedTask ? 'Edit Task Modal' : 'Add Task Modal'}
+                        </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <InputGroup
@@ -70,11 +72,15 @@ class AddTaskModal extends React.PureComponent {
                         </InputGroup>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.props.onHide}>
+                        <Button variant="secondary" onClick={() => onHide()}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={this.handleSave}>
-                            Add
+                        <Button
+                            variant="primary"
+                            onClick={this.handleSave}
+                            disabled={!title || !description}
+                        >
+                            {editedTask ? 'Save' : 'Add Task'}
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -83,14 +89,9 @@ class AddTaskModal extends React.PureComponent {
     }
 }
 
-AddTaskModal.propTypes = {
+TaskModal.propTypes = {
     onHide: PropTypes.func,
     onSubmit: PropTypes.func,
-    editedTask: PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-    }),
 };
 
-export default AddTaskModal;
+export default TaskModal;
