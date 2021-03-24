@@ -6,13 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styles from './todo.module.css';
 
+const API_HOST = 'http://localhost:3001';
+
 export default class Todo extends React.Component {
     state = {
-        tasks: [
-            { _id: uuidv4(), title: '1', description: '1' },
-            { _id: uuidv4(), title: '2', description: '2' },
-            { _id: uuidv4(), title: '3', description: '3' },
-        ],
+        tasks: [],
         checkedTasks: new Set(),
         show: false,
         editedTask: null,
@@ -38,10 +36,21 @@ export default class Todo extends React.Component {
     };
 
     handleDeleteItem = (idItem) => {
-        const tasks = this.state.tasks;
-        const deletedItem = tasks.findIndex((item) => item._id === idItem);
-        tasks.splice(deletedItem, 1);
-        this.setState({ tasks });
+        fetch(`${API_HOST}/task/${idItem}`, {
+            method: 'DELETE',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) throw data.error;
+
+                const tasks = this.state.tasks;
+                const deletedItem = tasks.findIndex(
+                    (item) => item._id === idItem
+                );
+                tasks.splice(deletedItem, 1);
+                this.setState({ tasks });
+            })
+            .catch((error) => console.log(error));
     };
 
     handleCheked = (taskId) => {
@@ -57,25 +66,71 @@ export default class Todo extends React.Component {
     };
 
     handleDeleteCheckedTasks = () => {
-        let tasks = [...this.state.tasks];
-        tasks = tasks.filter((task) => !this.state.checkedTasks.has(task._id));
-        this.setState({
-            tasks,
-            checkedTasks: new Set(),
-        });
+        const { checkedTasks } = this.state;
+        fetch(`${API_HOST}/task`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                tasks: Array.from(checkedTasks),
+            }),
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) throw data.error;
+                let tasks = [...this.state.tasks];
+                tasks = tasks.filter(
+                    (task) => !this.state.checkedTasks.has(task._id)
+                );
+                this.setState({
+                    tasks,
+                    checkedTasks: new Set(),
+                });
+            })
+            .catch((err) => console.log('error', err));
     };
 
     handleEditeTask = (editedTask) => {
-        const tasks = [...this.state.tasks];
-        const indx = tasks.findIndex((item) => item._id === editedTask._id);
-        tasks[indx] = editedTask;
-        this.setState({ tasks });
+        console.log(editedTask._id);
+        fetch(`${API_HOST}/task/${editedTask._id}`, {
+            method: 'PUT',
+            body: JSON.stringify(editedTask),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) throw data.error;
+
+                const tasks = [...this.state.tasks];
+                const indx = tasks.findIndex(
+                    (item) => item._id === editedTask._id
+                );
+                tasks[indx] = editedTask;
+                this.setState({ tasks });
+            })
+            .catch((error) => console.log(error));
     };
 
-    handleSubmit = (formData) => {
-        const tasks = [...this.state.tasks];
-        tasks.push({ ...formData, _id: uuidv4() });
-        this.setState({ tasks });
+    handleAddTask = (formData) => {
+        fetch(`${API_HOST}/task`, {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) {
+                    throw data.error;
+                }
+
+                const tasks = [...this.state.tasks];
+                tasks.push(data);
+                this.setState({ tasks });
+            })
+            .catch((err) => console.log(err));
     };
 
     handleCheckedAllTasks = () => {
@@ -109,7 +164,17 @@ export default class Todo extends React.Component {
             </Col>
         );
     };
-
+    componentDidMount() {
+        fetch(`${API_HOST}/task`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) throw data.error;
+                this.setState({
+                    tasks: data,
+                });
+            })
+            .catch((error) => console.log(error));
+    }
     render() {
         const {
             isOpenConfirm,
@@ -163,7 +228,7 @@ export default class Todo extends React.Component {
                 {show ? (
                     <TaskModal
                         onHide={this.toggleAddEdite}
-                        onSubmit={this.handleSubmit}
+                        onSubmit={this.handleAddTask}
                         editedTask={editedTask}
                         todoF={this.handleInput}
                     />

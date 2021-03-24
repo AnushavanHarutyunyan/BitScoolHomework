@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { FormControl } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+import DatePicker from 'react-datepicker';
+import formatDate from '../utils/dateFormater';
 
 class TaskModal extends React.PureComponent {
     constructor(props) {
@@ -13,8 +15,17 @@ class TaskModal extends React.PureComponent {
             title: '',
             description: '',
             ...props.editedTask,
+            date: props.editedTask
+                ? new Date(props.editedTask.date)
+                : new Date(),
         };
     }
+
+    setDate = (date) => {
+        this.setState({
+            date,
+        });
+    };
 
     handleChange = ({ target }) => {
         const { name, value } = target;
@@ -23,14 +34,10 @@ class TaskModal extends React.PureComponent {
 
     handleSave = ({ type, key }) => {
         const { title, description } = this.state;
-        if (
-            !this.state.title ||
-            !this.state.description ||
-            (type === 'keypress' && key !== 'Enter')
-        )
+        if (!title || !description || (type === 'keypress' && key !== 'Enter'))
             return;
-
-        this.props.onSubmit(this.state);
+        const formData = { ...this.state, date: formatDate(this.state.date) };
+        this.props.onSubmit(formData);
         this.props.onHide();
     };
 
@@ -39,7 +46,7 @@ class TaskModal extends React.PureComponent {
     }
 
     render() {
-        const { title, description } = this.state;
+        const { title, description, date } = this.state;
         const { editedTask, onHide } = this.props;
         return (
             <>
@@ -68,6 +75,12 @@ class TaskModal extends React.PureComponent {
                                 onChange={this.handleChange}
                                 value={description}
                                 placeholder="description"
+                            />
+                        </InputGroup>
+                        <InputGroup>
+                            <DatePicker
+                                selected={date}
+                                onChange={(date) => this.setDate(date)}
                             />
                         </InputGroup>
                     </Modal.Body>

@@ -30,7 +30,8 @@ const Task = ({
     return (
         <div className={isChecked ? styles.showBorderStyle : styles.task}>
             <p>Task - {task.title}</p>
-            <p>Task - {task.description}</p>
+            <p>Description - {task.description}</p>
+            <p>Date - {task.date.slice(0, 10)}</p>
             <Form.Check
                 className={styles.checkBox}
                 type={'checkbox'}
