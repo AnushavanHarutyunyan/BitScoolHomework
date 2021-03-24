@@ -1,7 +1,7 @@
 import React from 'react';
-import Task from '../Task/Task';
-import Confirm from '../Confirm';
-import TaskModal from '../TaskModal/TaskModal';
+import Task from '../../Task/Task';
+import Confirm from '../../Confirm';
+import TaskModal from '../../TaskModal/TaskModal';
 import { v4 as uuidv4 } from 'uuid';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styles from './todo.module.css';

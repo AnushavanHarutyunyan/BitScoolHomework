@@ -1,17 +1,39 @@
 import Nav from 'react-bootstrap/Nav';
+import { NavLink } from 'react-router-dom';
 import styles from '../NavBar/navbar.module.css';
 
 const NavBar = () => {
     return (
         <Nav className={styles.nav}>
             <Nav.Item>
-                <Nav.Link href="/home">Active</Nav.Link>
+                <NavLink
+                    to="/"
+                    activeStyle={{ color: 'rgba(214, 122, 60, 0.8)' }}
+                    className="nav-link"
+                    exact={true}
+                >
+                    Home
+                </NavLink>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-1">Link</Nav.Link>
+                <NavLink
+                    to="/contact"
+                    activeStyle={{ color: 'rgba(214, 122, 60, 0.8)' }}
+                    className="nav-link"
+                    exact={true}
+                >
+                    Contact
+                </NavLink>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-2">Link</Nav.Link>
+                <NavLink
+                    to="/about"
+                    activeStyle={{ color: 'rgba(214, 122, 60, 0.8)' }}
+                    className="nav-link"
+                    exact={true}
+                >
+                    About us
+                </NavLink>
             </Nav.Item>
         </Nav>
     );

@@ -1,4 +1,10 @@
 .nav a:hover {
     border: 1px solid rgb(118, 116, 230);
     border-radius: 5%;
+    background-color: rgb(3, 141, 141, 0.2);
+}
+
+.nav a {
+    display: inline;
+    margin-top: 10px;
 }
