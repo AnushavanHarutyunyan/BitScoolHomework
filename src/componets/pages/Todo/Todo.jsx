@@ -2,6 +2,7 @@ import React from 'react';
 import Task from '../../Task/Task';
 import Confirm from '../../Confirm';
 import TaskModal from '../../TaskModal/TaskModal';
+import SpinnerComp from '../../Spinner/Spinner';
 import { v4 as uuidv4 } from 'uuid';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styles from './todo.module.css';
@@ -15,6 +16,7 @@ export default class Todo extends React.Component {
         show: false,
         editedTask: null,
         isOpenConfirm: false,
+        loading: false,
     };
 
     toggleOpenConfirm = () => {
@@ -36,19 +38,19 @@ export default class Todo extends React.Component {
     };
 
     handleDeleteItem = (idItem) => {
+        this.setState({ loading: true });
         fetch(`${API_HOST}/task/${idItem}`, {
             method: 'DELETE',
         })
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
-
                 const tasks = this.state.tasks;
                 const deletedItem = tasks.findIndex(
                     (item) => item._id === idItem
                 );
                 tasks.splice(deletedItem, 1);
-                this.setState({ tasks });
+                this.setState({ tasks, loading: false });
             })
             .catch((error) => console.log(error));
     };
@@ -67,6 +69,7 @@ export default class Todo extends React.Component {
 
     handleDeleteCheckedTasks = () => {
         const { checkedTasks } = this.state;
+        this.setState({ loading: true });
         fetch(`${API_HOST}/task`, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -83,6 +86,7 @@ export default class Todo extends React.Component {
                 );
                 this.setState({
                     tasks,
+                    loading: false,
                     checkedTasks: new Set(),
                 });
             })
@@ -90,7 +94,7 @@ export default class Todo extends React.Component {
     };
 
     handleEditeTask = (editedTask) => {
-        console.log(editedTask._id);
+        this.setState({ loading: true });
         fetch(`${API_HOST}/task/${editedTask._id}`, {
             method: 'PUT',
             body: JSON.stringify(editedTask),
@@ -107,12 +111,16 @@ export default class Todo extends React.Component {
                     (item) => item._id === editedTask._id
                 );
                 tasks[indx] = editedTask;
-                this.setState({ tasks });
+                this.setState({ tasks, editedTask: null });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log('Editeing error', error))
+            .finally(() => {
+                this.setState({ loading: false });
+            });
     };
 
     handleAddTask = (formData) => {
+        this.setState({ loading: true });
         fetch(`${API_HOST}/task`, {
             method: 'POST',
             body: JSON.stringify(formData),
@@ -128,9 +136,14 @@ export default class Todo extends React.Component {
 
                 const tasks = [...this.state.tasks];
                 tasks.push(data);
-                this.setState({ tasks });
+                this.setState({ tasks, show: false, loading: false });
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log('Adding Tasks', err);
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+            });
     };
 
     handleCheckedAllTasks = () => {
@@ -182,9 +195,11 @@ export default class Todo extends React.Component {
             checkedTasks,
             show,
             editedTask,
+            loading,
         } = this.state;
         return (
             <Container>
+                {loading && <SpinnerComp className={styles.spinner} />}
                 <Row>
                     <Col className={styles.addTaskBtn}>
                         <Button onClick={this.toggleAddEdite}>
@@ -229,7 +244,6 @@ export default class Todo extends React.Component {
                     <TaskModal
                         onHide={this.toggleAddEdite}
                         onSubmit={this.handleAddTask}
-                        editedTask={editedTask}
                         todoF={this.handleInput}
                     />
                 ) : (

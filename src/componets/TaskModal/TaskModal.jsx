@@ -38,7 +38,7 @@ class TaskModal extends React.PureComponent {
             return;
         const formData = { ...this.state, date: formatDate(this.state.date) };
         this.props.onSubmit(formData);
-        this.props.onHide();
+        // this.props.onHide();
     };
 
     componentDidMount() {
@@ -103,8 +103,9 @@ class TaskModal extends React.PureComponent {
 }
 
 TaskModal.propTypes = {
-    onHide: PropTypes.func,
-    onSubmit: PropTypes.func,
+    onHide: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    editedTask: PropTypes.object,
 };
 
 export default TaskModal;
