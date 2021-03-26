@@ -1,12 +1,13 @@
 .p {
     padding: 10px 10px;
-    margin-bottom: 5px;
     font-size: 20px;
     background-color: #cec1bc;
     font-size: 20px;
     text-decoration: line-through;
 }
-
+.task_p p {
+    margin-bottom: 1px;
+}
 .task {
     align-items: center;
     display: flex;

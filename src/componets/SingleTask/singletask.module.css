@@ -1,0 +1,13 @@
+.signgleTask {
+    text-align: center;
+}
+.btn {
+    /* margin-right: 20px; */
+}
+
+.btn_div {
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+}

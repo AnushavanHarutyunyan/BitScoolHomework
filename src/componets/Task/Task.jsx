@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Button } from 'react-bootstrap';
+import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +13,6 @@ const Task = ({
     handleCheked,
     checkedTasks,
     isChecked,
-    toggleAddEdite,
     EditedTask,
 }) => {
     const handleDelet = () => {
@@ -29,9 +29,13 @@ const Task = ({
 
     return (
         <div className={isChecked ? styles.showBorderStyle : styles.task}>
-            <p>Task - {task.title}</p>
-            <p>Description - {task.description}</p>
-            <p>Date - {task.date.slice(0, 10)}</p>
+            <div className={styles.task_p}>
+                <p>
+                    <Link to={'/task/' + task._id}>Task - {task.title}</Link>
+                </p>
+                <p>Description - {task.description}</p>
+                <p>Date - {task.date.slice(0, 10)}</p>
+            </div>
             <Form.Check
                 className={styles.checkBox}
                 type={'checkbox'}
@@ -71,4 +75,4 @@ Task.propTypes = {
     EditedTask: PropTypes.func.isRequired,
 };
 
-export default memo(Task);
+export default withRouter(memo(Task));

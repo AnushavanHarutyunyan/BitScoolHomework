@@ -5,7 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { FormControl } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import DatePicker from 'react-datepicker';
-import formatDate from '../utils/dateFormater';
+import formatDate from '../../utils/dateFormater';
 
 class TaskModal extends React.PureComponent {
     constructor(props) {
