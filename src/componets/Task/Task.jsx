@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { memo } from 'react';
-// import Spinner from '../Spinner/Spinner';
 import { Button } from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,10 +15,7 @@ const Task = ({
     checkedTasks,
     isChecked,
     EditedTask,
-    history,
 }) => {
-    // const [loading, setLoading] = useState(false);
-
     const handleDelet = () => {
         deletItem(task._id);
     };
@@ -34,10 +30,9 @@ const Task = ({
 
     return (
         <div className={isChecked ? styles.showBorderStyle : styles.task}>
-            {/* <div>{{ loading } && <Spinner />}</div> */}
             <div className={styles.task_p}>
                 <p>
-                    <Link to={'/task/'}>Task - {task.title}</Link>
+                    <Link to={`/task/${task._id}`}>Task - {task.title}</Link>
                 </p>
                 <p>Description - {task.description}</p>
                 <p>Date - {task.date.slice(0, 10)}</p>
