@@ -178,12 +178,14 @@ export default class Todo extends React.Component {
         );
     };
     componentDidMount() {
+        this.setState({ loading: true });
         fetch(`${API_HOST}/task`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
                 this.setState({
                     tasks: data,
+                    loading: false,
                 });
             })
             .catch((error) => console.log(error));

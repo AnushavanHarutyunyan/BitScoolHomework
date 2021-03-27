@@ -15,9 +15,11 @@ class SingleTask extends React.Component {
         isOpenConfirm: false,
         loading: false,
     };
+
     toggleEditModal = () => {
         this.setState({ isEditeModal: !this.state.isEditeModal });
     };
+
     handleEditeTask = (editTask) => {
         this.setState({ loading: true });
         fetch(`${API_HOST}/task/${editTask._id}`, {
@@ -47,7 +49,6 @@ class SingleTask extends React.Component {
                 if (data.error) throw console.log(data.error);
                 this.setState({
                     isOpenConfirm: false,
-                    isEditeModal: false,
                     loading: false,
                 });
                 this.props.history.push('/');
@@ -56,19 +57,25 @@ class SingleTask extends React.Component {
     };
 
     componentDidMount() {
+        console.log('componetn Did mount');
         const { id } = this.props.match.params;
+        this.setState({ loading: true });
         fetch(`${API_HOST}/task/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
+                console.log('if mtav');
                 this.setState({ singgleTasks: data });
             })
-            .catch((error) => this.props.history.push('/'));
+            .catch((error) => this.props.history.push('/404'))
+            .finally(() => {
+                this.setState({ loading: false });
+            });
     }
 
     render() {
         const { singgleTasks, isEditeModal, loading } = this.state;
-        if (!singgleTasks) return <p>'Loading'</p>;
+        if (!singgleTasks || loading) return <SpinnerComp />;
         return (
             <>
                 <div className={styles.signgleTask}>
@@ -100,7 +107,7 @@ class SingleTask extends React.Component {
                         editedTask={singgleTasks}
                     />
                 )}
-                {loading && <SpinnerComp />}
+                {/* {loading && <SpinnerComp />} */}
             </>
         );
     }
