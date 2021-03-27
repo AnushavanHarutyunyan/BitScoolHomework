@@ -36,6 +36,8 @@ class TaskModal extends React.PureComponent {
         const { title, description } = this.state;
         if (!title || !description || (type === 'keypress' && key !== 'Enter'))
             return;
+        if (!title.trim() || !description.trim())
+            return console.log('you can not make a blank line SUBMIT');
         const formData = { ...this.state, date: formatDate(this.state.date) };
         this.props.onSubmit(formData);
         // this.props.onHide();
