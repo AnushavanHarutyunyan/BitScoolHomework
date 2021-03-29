@@ -1,13 +1,21 @@
 .signgleTask {
+    margin: 20px auto 20px;
     text-align: center;
+}
+h1 {
+    margin-bottom: 35px;
+}
+p {
+    margin: 0;
+}
+p:last-child {
+    margin-bottom: 30px;
 }
 .btn {
     /* margin-right: 20px; */
 }
 
 .btn_div {
-    width: 20%;
     display: flex;
-    justify-content: space-around;
-    margin: 0 auto;
+    justify-content: space-evenly;
 }

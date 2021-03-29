@@ -1,9 +1,7 @@
+import ContactForm from '../../ContactForm/ContactForm';
+
 const About = () => {
-    return (
-        <div>
-            <h1>Contact</h1>
-        </div>
-    );
+    return <ContactForm />;
 };
 
 export default About;

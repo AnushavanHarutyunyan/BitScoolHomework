@@ -40,7 +40,6 @@ class TaskModal extends React.PureComponent {
             return console.log('you can not make a blank line SUBMIT');
         const formData = { ...this.state, date: formatDate(this.state.date) };
         this.props.onSubmit(formData);
-        // this.props.onHide();
     };
 
     componentDidMount() {

@@ -1,0 +1,9 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 50px 150px 0px;
+}
+.textarea {
+    resize: none;
+}
