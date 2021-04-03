@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { memo } from 'react';
 import { Button } from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';

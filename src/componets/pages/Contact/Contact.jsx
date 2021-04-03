@@ -1,7 +1,9 @@
-import ContactForm from '../../ContactForm/ContactForm';
+// import ContactForm from '../../ContactForm/ContactForm';
+import ContactFormWithHooks from '../../ContactForm/ContactFormWithHooks';
 
-const About = () => {
-    return <ContactForm />;
+const Contact = () => {
+    // return <ContactForm />;
+    return <ContactFormWithHooks />;
 };
 
-export default About;
+export default Contact;

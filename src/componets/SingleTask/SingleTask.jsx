@@ -58,16 +58,15 @@ class SingleTask extends React.Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
-        this.setState({ loading: true });
         fetch(`${API_HOST}/task/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
                 this.setState({ singgleTasks: data });
             })
-            .catch((error) => this.props.history.push('/404'))
-            .finally(() => {
-                this.setState({ loading: false });
+            .catch((error) => {
+                console.log('err', error);
+                this.props.history.push('/404');
             });
     }
 

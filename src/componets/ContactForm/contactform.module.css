@@ -7,3 +7,14 @@
 .textarea {
     resize: none;
 }
+.validMessage {
+    margin-top: 10px;
+    text-align: right;
+    color: #dc143c;
+    font-size: 15px;
+    /* border: 1px solid #030303; */
+    border-radius: 20px;
+}
+h4 {
+    font-size: 15px;
+}
