@@ -7,6 +7,7 @@ import About from './componets/pages/About/About';
 import NotFound from './componets/pages/NotFound/NotFound';
 import '../src/App.css';
 import SingleTask from './componets/SingleTask/SingleTask';
+import ProviderContactPage from './componets/Context/ContactProvider/ContactProvider';
 
 const pages = [
     {
