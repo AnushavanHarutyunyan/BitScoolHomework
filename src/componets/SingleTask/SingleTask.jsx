@@ -19,7 +19,6 @@ const SingleTask = (props) => {
         getSingleTask,
     } = context;
 
-    console.log(context);
     useEffect(() => {
         getSingleTask();
     }, []);
@@ -28,7 +27,6 @@ const SingleTask = (props) => {
 
     return (
         <>
-            <p>Context: {context}</p>
             <div className={styles.signgleTask}>
                 <h1>Single Task</h1>
                 <div>

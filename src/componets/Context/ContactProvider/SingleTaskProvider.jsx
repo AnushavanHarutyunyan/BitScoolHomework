@@ -47,9 +47,7 @@ const ProviderSingleTask = (props) => {
         fetch(`${API_HOST}/task/${id}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 if (data.error) throw data.error;
-                console.log(setSinggleTasks);
                 setSinggleTasks(data);
             })
             .catch((error) => {
