@@ -7,7 +7,7 @@ import About from './componets/pages/About/About';
 import NotFound from './componets/pages/NotFound/NotFound';
 import '../src/App.css';
 import SingleTask from './componets/SingleTask/SingleTask';
-import ProviderContactPage from './componets/Context/ContactProvider/ContactProvider';
+import ProviderSingleTask from './componets/Context/ContactProvider/SingleTaskProvider';
 
 const pages = [
     {
@@ -40,6 +40,20 @@ const pages = [
 class App extends React.Component {
     render() {
         const pagesJSX = pages.map((item, indx) => {
+            if (item.path === '/task/:id') {
+                return (
+                    <Route
+                        key={indx}
+                        path={item.path}
+                        render={(props) => (
+                            <ProviderSingleTask {...props}>
+                                <item.component {...props} />
+                            </ProviderSingleTask>
+                        )}
+                        exact={item.exact}
+                    />
+                );
+            }
             return (
                 <Route
                     key={indx}

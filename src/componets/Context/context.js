@@ -1,5 +1,4 @@
 import { createContext } from 'react';
 
-const contextContactPage = createContext();
-
-export { contextContactPage };
+export const contextContactPage = createContext();
+export const contextSignleTask = createContext();

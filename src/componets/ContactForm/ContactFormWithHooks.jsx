@@ -34,26 +34,6 @@ const ContactFormWithHooks = (props) => {
         handleSubmit,
     } = context;
 
-    // const [formState, setFormState] = useState({
-    //     name: {
-    //         valid: false,
-    //         error: null,
-    //         value: '',
-    //     },
-    //     email: {
-    //         valid: false,
-    //         error: null,
-    //         value: '',
-    //     },
-    //     message: {
-    //         valid: false,
-    //         error: null,
-    //         value: '',
-    //     },
-    // });
-    // const [loading, setLoading] = useState(false);
-    // const [errorMessage, setErrorMessage] = useState('');
-
     const formJSX = forms.map((item, indx) => {
         return (
             <Form.Group key={indx}>
