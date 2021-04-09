@@ -199,6 +199,7 @@ export default class Todo extends React.Component {
             editedTask,
             loading,
         } = this.state;
+
         return (
             <Container>
                 {loading && <SpinnerComp className={styles.spinner} />}
@@ -209,7 +210,6 @@ export default class Todo extends React.Component {
                         </Button>
                     </Col>
                 </Row>
-
                 <Row className={styles.row}>
                     {tasks.length === 0 ? (
                         <p>there are no taks</p>

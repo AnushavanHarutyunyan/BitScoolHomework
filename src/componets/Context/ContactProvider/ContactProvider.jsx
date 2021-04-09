@@ -29,8 +29,6 @@ const ProviderContactPage = (props) => {
             error: null,
             value: '',
         },
-        loading: false,
-        errorMessage: '',
     });
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');

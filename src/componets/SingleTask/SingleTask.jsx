@@ -34,11 +34,12 @@ const SingleTask = (props) => {
                     <p>Description: {singgleTasks.description}</p>
                 </div>
                 <div className={styles.btn_div}>
-                    <Button variant="warning" className={styles.btn}>
-                        <FontAwesomeIcon
-                            icon={faEdit}
-                            onClick={() => toggleEditModal(true)}
-                        />
+                    <Button
+                        variant="warning"
+                        className={styles.btn}
+                        onClick={() => toggleEditModal(true)}
+                    >
+                        <FontAwesomeIcon icon={faEdit} />
                     </Button>
                     <Button
                         variant="danger"

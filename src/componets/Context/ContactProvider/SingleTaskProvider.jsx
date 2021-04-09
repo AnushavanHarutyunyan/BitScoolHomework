@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { contextSignleTask } from '../context';
 
 const API_HOST = 'http://localhost:3001';

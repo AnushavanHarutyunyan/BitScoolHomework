@@ -7,7 +7,8 @@ import About from './componets/pages/About/About';
 import NotFound from './componets/pages/NotFound/NotFound';
 import '../src/App.css';
 import SingleTask from './componets/SingleTask/SingleTask';
-import ProviderSingleTask from './componets/Context/ContactProvider/SingleTaskProvider';
+// import ProviderSingleTask from './componets/Context/ContactProvider/SingleTaskProvider';
+import SingleTaskWithReduce from './componets/SingleTask/SingleTaskWithReducer';
 
 const pages = [
     {
@@ -46,9 +47,10 @@ class App extends React.Component {
                         key={indx}
                         path={item.path}
                         render={(props) => (
-                            <ProviderSingleTask {...props}>
-                                <item.component {...props} />
-                            </ProviderSingleTask>
+                            <SingleTaskWithReduce {...props} />
+                            // <ProviderSingleTask {...props}>
+                            //     <item.component {...props} />
+                            // </ProviderSingleTask>
                         )}
                         exact={item.exact}
                     />

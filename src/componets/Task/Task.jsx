@@ -19,11 +19,9 @@ const Task = ({
     const handleDelet = () => {
         deletItem(task._id);
     };
-
     const checkedToggle = () => {
         handleCheked(task._id);
     };
-
     const handleClickEditer = () => {
         EditedTask(task);
     };
