@@ -8,7 +8,7 @@ import NotFound from './componets/pages/NotFound/NotFound';
 import '../src/App.css';
 import SingleTask from './componets/SingleTask/SingleTask';
 // import ProviderSingleTask from './componets/Context/ContactProvider/SingleTaskProvider';
-import SingleTaskWithReduce from './componets/SingleTask/SingleTaskWithReducer';
+// import SingleTaskWithReduce from './componets/SingleTask/SingleTaskWithReducer';
 
 const pages = [
     {
@@ -47,7 +47,8 @@ class App extends React.Component {
                         key={indx}
                         path={item.path}
                         render={(props) => (
-                            <SingleTaskWithReduce {...props} />
+                            <item.component />
+                            // <SingleTaskWithReduce {...props} />
                             // <ProviderSingleTask {...props}>
                             //     <item.component {...props} />
                             // </ProviderSingleTask>

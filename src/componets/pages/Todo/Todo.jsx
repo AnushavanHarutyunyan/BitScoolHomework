@@ -5,26 +5,14 @@ import TaskModal from '../../TaskModal/TaskModal';
 import SpinnerComp from '../../Spinner/Spinner';
 import { v4 as uuidv4 } from 'uuid';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import styles from './todo.module.css';
 
 const API_HOST = 'http://localhost:3001';
 
-export default class Todo extends React.Component {
+class Todo extends React.Component {
     state = {
-        tasks: [],
-        checkedTasks: new Set(),
-        show: false,
         editedTask: null,
-        isOpenConfirm: false,
-        loading: false,
-    };
-
-    toggleOpenConfirm = () => {
-        this.setState({ isOpenConfirm: !this.state.isOpenConfirm });
-    };
-
-    toggleAddEdite = () => {
-        this.setState({ show: !this.state.show });
     };
 
     toggleSetEditTask = (editedTask = null) => {
@@ -38,38 +26,23 @@ export default class Todo extends React.Component {
     };
 
     handleDeleteItem = (idItem) => {
-        this.setState({ loading: true });
+        this.props.setOrRemoveLoading(true);
         fetch(`${API_HOST}/task/${idItem}`, {
             method: 'DELETE',
         })
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
-                const tasks = this.state.tasks;
-                const deletedItem = tasks.findIndex(
-                    (item) => item._id === idItem
-                );
-                tasks.splice(deletedItem, 1);
-                this.setState({ tasks, loading: false });
+                this.props.deleteOneTask(idItem);
             })
-            .catch((error) => console.log(error));
-    };
-
-    handleCheked = (taskId) => {
-        let checkedTasks = new Set(this.state.checkedTasks);
-        if (!checkedTasks.has(taskId)) {
-            checkedTasks.add(taskId);
-        } else {
-            checkedTasks.delete(taskId);
-            this.setState({ checked: '' });
-        }
-
-        this.setState({ checkedTasks });
+            .catch((error) => console.log(error))
+            .finally(() => this.props.setOrRemoveLoading(false));
     };
 
     handleDeleteCheckedTasks = () => {
-        const { checkedTasks } = this.state;
-        this.setState({ loading: true });
+        const { checkedTasks } = this.props;
+        const { setOrRemoveLoading, deleteCheckedTask } = this.props;
+        setOrRemoveLoading(true);
         fetch(`${API_HOST}/task`, {
             method: 'PATCH',
             body: JSON.stringify({
@@ -80,21 +53,14 @@ export default class Todo extends React.Component {
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
-                let tasks = [...this.state.tasks];
-                tasks = tasks.filter(
-                    (task) => !this.state.checkedTasks.has(task._id)
-                );
-                this.setState({
-                    tasks,
-                    loading: false,
-                    checkedTasks: new Set(),
-                });
+                deleteCheckedTask();
             })
-            .catch((err) => console.log('error', err));
+            .catch((err) => console.log('error', err))
+            .finally(() => setOrRemoveLoading(false));
     };
 
     handleEditeTask = (editedTask) => {
-        this.setState({ loading: true });
+        this.props.setOrRemoveLoading(true);
         fetch(`${API_HOST}/task/${editedTask._id}`, {
             method: 'PUT',
             body: JSON.stringify(editedTask),
@@ -106,21 +72,21 @@ export default class Todo extends React.Component {
             .then((data) => {
                 if (data.error) throw data.error;
 
-                const tasks = [...this.state.tasks];
+                const tasks = [...this.props.tasks];
                 const indx = tasks.findIndex(
                     (item) => item._id === editedTask._id
                 );
                 tasks[indx] = editedTask;
-                this.setState({ tasks, editedTask: null });
+                this.setState({ editedTask: null });
             })
             .catch((error) => console.log('Editeing error', error))
             .finally(() => {
-                this.setState({ loading: false });
+                this.props.setOrRemoveLoading(false);
             });
     };
 
     handleAddTask = (formData) => {
-        this.setState({ loading: true });
+        this.props.setOrRemoveLoading(true);
         fetch(`${API_HOST}/task`, {
             method: 'POST',
             body: JSON.stringify(formData),
@@ -133,21 +99,21 @@ export default class Todo extends React.Component {
                 if (data.error) {
                     throw data.error;
                 }
-
-                const tasks = [...this.state.tasks];
-                tasks.push(data);
-                this.setState({ tasks, show: false, loading: false });
+                this.props.addTask(data);
+                this.props.setOrRemoveLoading(false);
+                this.setState({ isOpenAddTaskModal: false });
             })
             .catch((err) => {
                 console.log('Adding Tasks', err);
             })
             .finally(() => {
-                this.setState({ loading: false });
+                this.props.setOrRemoveLoading(false);
             });
     };
 
     handleCheckedAllTasks = () => {
-        let { tasks, checkedTasks } = this.state;
+        let { checkedTasks } = this.state;
+        let { tasks } = this.props;
         const allTasks = tasks;
         if (tasks.length !== checkedTasks.size) {
             allTasks.forEach((item) =>
@@ -161,43 +127,35 @@ export default class Todo extends React.Component {
         }
     };
 
-    renderTasks = (item) => {
-        let { checkedTasks } = this.state;
-        return (
-            <Col key={item._id} className={styles.col}>
-                <Task
-                    task={item}
-                    deletItem={this.handleDeleteItem}
-                    handleCheked={this.handleCheked}
-                    checkedTasks={checkedTasks}
-                    isChecked={checkedTasks.has(item._id)}
-                    EditedTask={this.toggleSetEditTask}
-                    toggleAddEdite={this.toggleAddEdite}
-                />
-            </Col>
-        );
-    };
     componentDidMount() {
-        this.setState({ loading: true });
+        this.props.setOrRemoveLoading(true);
         fetch(`${API_HOST}/task`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
-                this.setState({
-                    tasks: data,
-                    loading: false,
-                });
+                this.props.setTasks(data);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error))
+            .finally(() => this.props.setOrRemoveLoading(false));
     }
+
     render() {
+        //redux state
         const {
-            isOpenConfirm,
             tasks,
-            checkedTasks,
-            show,
-            editedTask,
             loading,
+            isOpenAddTaskModal,
+            isOpenConfirm,
+            checkedTasks,
+            toggleOpenAddTaskModal,
+            toggleOpenConfirm,
+            toggleCheckTask,
+        } = this.props;
+        const {
+            // tasks,
+            // isOpenConfirm,
+            editedTask,
+            // loading,
         } = this.state;
 
         return (
@@ -205,7 +163,7 @@ export default class Todo extends React.Component {
                 {loading && <SpinnerComp className={styles.spinner} />}
                 <Row>
                     <Col className={styles.addTaskBtn}>
-                        <Button onClick={this.toggleAddEdite}>
+                        <Button onClick={toggleOpenAddTaskModal}>
                             Add Task Modal
                         </Button>
                     </Col>
@@ -215,7 +173,21 @@ export default class Todo extends React.Component {
                         <p>there are no taks</p>
                     ) : (
                         tasks.map((item) => {
-                            return this.renderTasks(item);
+                            return (
+                                <Col key={item._id} className={styles.col}>
+                                    <Task
+                                        task={item}
+                                        deletItem={this.handleDeleteItem}
+                                        handleCheked={toggleCheckTask}
+                                        checkedTasks={checkedTasks}
+                                        isChecked={checkedTasks.has(item._id)}
+                                        EditedTask={this.toggleSetEditTask}
+                                        toggleAddEdite={
+                                            this.props.toggleOpenAddTaskModal
+                                        }
+                                    />
+                                </Col>
+                            );
                         })
                     )}
                 </Row>
@@ -224,7 +196,7 @@ export default class Todo extends React.Component {
                         <Button
                             variant="danger"
                             className={styles.delete_task}
-                            onClick={this.toggleOpenConfirm}
+                            onClick={toggleOpenConfirm}
                             disabled={!checkedTasks.size}
                         >
                             Delete Tasks
@@ -242,9 +214,9 @@ export default class Todo extends React.Component {
                         </Button>
                     </Col>
                 </Row>
-                {show ? (
+                {isOpenAddTaskModal ? (
                     <TaskModal
-                        onHide={this.toggleAddEdite}
+                        onHide={toggleOpenAddTaskModal}
                         onSubmit={this.handleAddTask}
                         todoF={this.handleInput}
                     />
@@ -253,7 +225,7 @@ export default class Todo extends React.Component {
                 )}
                 {isOpenConfirm && (
                     <Confirm
-                        onHide={this.toggleOpenConfirm}
+                        onHide={toggleOpenConfirm}
                         onSubmit={this.handleDeleteCheckedTasks}
                         count={checkedTasks.size}
                     />
@@ -269,3 +241,44 @@ export default class Todo extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.todoState.tasks,
+        loading: state.loading,
+        checkedTasks: state.todoState.checkedTasks,
+        isOpenAddTaskModal: state.todoState.isOpenAddTaskModal,
+        isOpenConfirm: state.todoState.isOpenConfirm,
+    };
+};
+
+const mapDispatchtoProps = (dispatch) => {
+    return {
+        setTasks: (data) => {
+            dispatch({ type: 'SET_TASKS', data });
+        },
+        deleteOneTask: (_id) => {
+            dispatch({ type: 'DELETE_ONE_TASK', _id });
+        },
+        setOrRemoveLoading: (isLoading) => {
+            dispatch({ type: 'SET_OR_REMOVE_LOADING', isLoading });
+        },
+        toggleOpenAddTaskModal: () => {
+            dispatch({ type: 'TOGLE_ADD_TASK_MODAL' });
+        },
+        addTask: (data) => {
+            dispatch({ type: 'ADD_TASK', data });
+        },
+        toggleOpenConfirm: () => {
+            dispatch({ type: 'TOGGLE_CONFIRM_MODAL' });
+        },
+        toggleCheckTask: (_id) => {
+            dispatch({ type: 'TOGGLE_CHECK_TASK', _id });
+        },
+        deleteCheckedTask: () => {
+            dispatch({ type: 'DELETE_CHECKED_TASK' });
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchtoProps)(Todo);
