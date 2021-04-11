@@ -112,7 +112,7 @@ class Todo extends React.Component {
     };
 
     handleCheckedAllTasks = () => {
-        let { checkedTasks } = this.state;
+        let { checkedTasks } = this.props;
         let { tasks } = this.props;
         const allTasks = tasks;
         if (tasks.length !== checkedTasks.size) {
