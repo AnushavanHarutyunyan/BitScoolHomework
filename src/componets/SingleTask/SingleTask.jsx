@@ -5,13 +5,14 @@ import TaskModal from '../TaskModal/TaskModal';
 import SpinnerComp from '../Spinner/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { setSingleTaskThunk } from '../../Redux/action';
 import styles from './singletask.module.css';
 
 const API_HOST = 'http://localhost:3001';
 
 const SingleTask = (props) => {
     const {
-        singgleTasks,
+        singleTask,
         isEditeModal,
         toggleEditModal,
         setOrRemoveLoading,
@@ -21,7 +22,7 @@ const SingleTask = (props) => {
     } = props;
 
     useEffect(() => {
-        getSingleTask();
+        props.setSingleTaskThunk(props.match.params.id, props.history);
     }, []);
 
     const handleEditeTask = (editTask) => {
@@ -40,8 +41,9 @@ const SingleTask = (props) => {
             .catch((error) => console.log('Single Task edited', error))
             .finally(() => setOrRemoveLoading(false));
     };
+
     const handleDelet = () => {
-        const { _id } = singgleTasks;
+        const { _id } = singleTask;
         setOrRemoveLoading(true);
         fetch(`${API_HOST}/task/${_id}`, {
             method: 'DELETE',
@@ -56,29 +58,15 @@ const SingleTask = (props) => {
             .catch((err) => console.log('Single Task Deleting error', err));
     };
 
-    const getSingleTask = () => {
-        const { id } = props.match.params;
-        fetch(`${API_HOST}/task/${id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.error) throw data.error;
-                setSinggleTasks(data);
-            })
-            .catch((error) => {
-                console.log('Single Task Get request', error.message);
-                props.history.push('/404');
-            });
-    };
-
     // if (!singgleTasks || loading) return <SpinnerComp />;
-
+    console.log(props);
     return (
         <>
             <div className={styles.signgleTask}>
                 <h1>Single Task</h1>
                 <div>
-                    <p>Title: {singgleTasks.title}</p>
-                    <p>Description: {singgleTasks.description}</p>
+                    <p>Title: {singleTask.title}</p>
+                    <p>Description: {singleTask.description}</p>
                 </div>
                 <div className={styles.btn_div}>
                     <Button
@@ -101,34 +89,27 @@ const SingleTask = (props) => {
                 <TaskModal
                     onHide={() => toggleEditModal(false)}
                     onSubmit={handleEditeTask}
-                    editedTask={singgleTasks}
+                    editedTask={singleTask}
                 />
             )}
             {loading && <SpinnerComp />}
         </>
     );
 };
+
 const mapStattoProps = (state) => {
+    const { singleTask, isEditeModal } = state.singleTaskState;
     return {
-        singleTask: state.singleTask.singgleTasks,
-        isEditeModal: state.singgleTasks.isEditeModal,
-        isOpenConfirm: state.singgleTasks.isOpenConfirm,
+        singleTask,
+        isEditeModal,
+        loading: state.globalState.loading,
     };
 };
+
 const mapDispatchtoProps = (dispatch) => {
     return {
-        setOrRemoveLoading: (isLoading) => {
-            dispatch({ type: 'SET_OR_REMOVE_LOADING', isLoading });
-        },
-        toggleEditModal: (isToggleEditModal) => {
-            dispatch({ type: 'TOGGLE_EDITE_MODAL', isToggleEditModal });
-        },
-        setSinggleTasks: (data) => {
-            dispatch({ type: 'SET_SINGGLE_TASKS', data });
-        },
-        setisOpenConfirm: () => {
-            dispatch({ type: 'SET_IS_OPEN_CONFIRM' });
-        },
+        setSingleTaskThunk,
     };
 };
+
 export default connect(mapStattoProps, mapDispatchtoProps)(SingleTask);

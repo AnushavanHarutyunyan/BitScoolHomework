@@ -4,7 +4,7 @@ import { contextSignleTask } from '../context';
 const API_HOST = 'http://localhost:3001';
 
 const ProviderSingleTask = (props) => {
-    const [singgleTasks, setSinggleTasks] = useState(null);
+    const [singgleTask, setSinggleTask] = useState(null);
     const [isEditeModal, toggleEditModal] = useState(false);
     const [isOpenConfirm, setisOpenConfirm] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ const ProviderSingleTask = (props) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
-                setSinggleTasks(data);
+                setSinggleTask(data);
                 toggleEditModal(false);
             })
             .catch((error) => console.log('Single Task edited', error))
@@ -27,7 +27,7 @@ const ProviderSingleTask = (props) => {
     };
 
     const handleDelet = () => {
-        const { _id } = singgleTasks;
+        const { _id } = singgleTask;
         setLoading(true);
         fetch(`${API_HOST}/task/${_id}`, {
             method: 'DELETE',
@@ -48,7 +48,7 @@ const ProviderSingleTask = (props) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) throw data.error;
-                setSinggleTasks(data);
+                setSinggleTask(data);
             })
             .catch((error) => {
                 console.log('Single Task Get request', error.message);
@@ -59,7 +59,7 @@ const ProviderSingleTask = (props) => {
     return (
         <contextSignleTask.Provider
             value={{
-                singgleTasks,
+                singgleTask,
                 isEditeModal,
                 isOpenConfirm,
                 loading,

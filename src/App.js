@@ -47,7 +47,7 @@ class App extends React.Component {
                         key={indx}
                         path={item.path}
                         render={(props) => (
-                            <item.component />
+                            <item.component {...props} />
                             // <SingleTaskWithReduce {...props} />
                             // <ProviderSingleTask {...props}>
                             //     <item.component {...props} />
