@@ -39,7 +39,7 @@ export const addTaskThunk = (dispatch, formData) => {
         });
 };
 
-export const deleteOneTaskThunk = (dispatch, _id) => {
+export const deleteOneTaskThunk = (dispatch, _id, history = null) => {
     dispatch({ type: 'SET_DELETE_TASK_ID', _id });
     fetch(`${API_HOST}/task/${_id}`, {
         method: 'DELETE',
@@ -47,7 +47,11 @@ export const deleteOneTaskThunk = (dispatch, _id) => {
         .then((res) => res.json())
         .then((data) => {
             if (data.error) throw data.error;
-            dispatch({ type: types.DELETE_ONE_TASK, _id });
+            if (history) {
+                history.push('/');
+            } else {
+                dispatch({ type: types.DELETE_ONE_TASK, _id });
+            }
         })
         .catch((error) => console.log(error))
         .finally(() => dispatch({ type: types.SET_DELETE_TASK_ID, _id: null }));
@@ -73,7 +77,7 @@ export const deleteCheckedTasksThunk = (dispatch, checkedTasks) => {
         );
 };
 
-export const editeTaskThunk = (dispatch, editedTask) => {
+export const editeTaskThunk = (dispatch, editedTask, page = 'todo') => {
     dispatch({ type: types.SET_OR_REMOVE_LOADING, isLoading: false });
     fetch(`${API_HOST}/task/${editedTask._id}`, {
         method: 'PUT',
@@ -84,9 +88,12 @@ export const editeTaskThunk = (dispatch, editedTask) => {
     })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data);
             if (data.error) throw data.error;
-            dispatch({ type: types.EDIT_TASK, data });
+            if (page === 'todo') {
+                dispatch({ type: types.EDIT_TASK, data });
+            } else if (page === 'singleTask') {
+                dispatch({ type: types.SET_SINGLE_TASKS, data });
+            }
         })
         .catch((error) => console.log('Editeing error', error))
         .finally(() => {
@@ -94,7 +101,7 @@ export const editeTaskThunk = (dispatch, editedTask) => {
         });
 };
 
-export const setSingleTaskThunk = (id, history) => (dispatch) => {
+export const setSingleTaskThunk = (dispatch, id, history) => {
     fetch(`${API_HOST}/task/${id}`)
         .then((res) => res.json())
         .then((data) => {
@@ -105,4 +112,12 @@ export const setSingleTaskThunk = (id, history) => (dispatch) => {
             console.log('Single Task Get request', error.message);
             history.push('/404');
         });
+};
+
+export const toggleSingleEditeModal = (dispatch) => {
+    dispatch({ type: types.TOGGLE_SINGLE_TASK_EDIT_MODAL });
+};
+
+export const resetSingleTaskState = (dispatch) => {
+    dispatch({ type: types.RESET_SINGLE_TASK_STATE });
 };

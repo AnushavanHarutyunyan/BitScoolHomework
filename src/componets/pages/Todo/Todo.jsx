@@ -132,14 +132,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchtoProps = (dispatch) => {
     return {
-        // setTasks: (data) => {
-        //     dispatch({ type: 'SET_TASKS', data });
-        // },
         deleteOneTask: (_id) => {
             dispatch((dispatch) => deleteOneTaskThunk(dispatch, _id));
-        },
-        setOrRemoveLoading: (isLoading) => {
-            dispatch({ type: types.SET_OR_REMOVE_LOADING, isLoading });
         },
         toggleOpenAddTaskModal: () => {
             dispatch({ type: types.TOGLE_ADD_TASK_MODAL });

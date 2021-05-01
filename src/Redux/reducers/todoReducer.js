@@ -60,7 +60,6 @@ const todoReducer = (state = initialState, action) => {
             } else {
                 checkedTasks.delete(_id);
             }
-
             return {
                 ...state,
                 checkedTasks,

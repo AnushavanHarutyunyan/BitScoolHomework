@@ -5,61 +5,31 @@ import TaskModal from '../TaskModal/TaskModal';
 import SpinnerComp from '../Spinner/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { setSingleTaskThunk } from '../../Redux/action';
+import {
+    setSingleTaskThunk,
+    deleteOneTaskThunk,
+    editeTaskThunk,
+    toggleSingleEditeModal,
+    resetSingleTaskState,
+} from '../../Redux/action';
 import styles from './singletask.module.css';
 
 const API_HOST = 'http://localhost:3001';
 
 const SingleTask = (props) => {
-    const {
-        singleTask,
-        isEditeModal,
-        toggleEditModal,
-        setOrRemoveLoading,
-        setSinggleTasks,
-        setisOpenConfirm,
-        loading,
-    } = props;
+    const { id } = props.match.params;
+    const { history, setSingleTaskThunk, resetSingleTaskState } = props;
 
     useEffect(() => {
-        props.setSingleTaskThunk(props.match.params.id, props.history);
+        setSingleTaskThunk(id, history);
+        return function () {
+            resetSingleTaskState();
+        };
     }, []);
 
-    const handleEditeTask = (editTask) => {
-        setOrRemoveLoading(true);
-        fetch(`${API_HOST}/task/${editTask._id}`, {
-            method: 'PUT',
-            body: JSON.stringify(editTask),
-            headers: { 'Content-Type': 'application/json' },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.error) throw data.error;
-                setSinggleTasks(data);
-                toggleEditModal(false);
-            })
-            .catch((error) => console.log('Single Task edited', error))
-            .finally(() => setOrRemoveLoading(false));
-    };
+    const { singleTask, isEditeModal, loading } = props;
 
-    const handleDelet = () => {
-        const { _id } = singleTask;
-        setOrRemoveLoading(true);
-        fetch(`${API_HOST}/task/${_id}`, {
-            method: 'DELETE',
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.error) throw console.log(data.error);
-                setisOpenConfirm(false);
-                setOrRemoveLoading(false);
-                props.history.push('/');
-            })
-            .catch((err) => console.log('Single Task Deleting error', err));
-    };
-
-    // if (!singgleTasks || loading) return <SpinnerComp />;
-    console.log(props);
+    if (!singleTask || loading) return <SpinnerComp />;
     return (
         <>
             <div className={styles.signgleTask}>
@@ -72,14 +42,16 @@ const SingleTask = (props) => {
                     <Button
                         variant="warning"
                         className={styles.btn}
-                        onClick={() => toggleEditModal(true)}
+                        onClick={props.toggleSingleEditeModal}
                     >
                         <FontAwesomeIcon icon={faEdit} />
                     </Button>
                     <Button
                         variant="danger"
                         className={styles.btn}
-                        onClick={handleDelet}
+                        onClick={() =>
+                            deleteOneTaskThunk(singleTask._id, history)
+                        }
                     >
                         <FontAwesomeIcon icon={faTrash} />
                     </Button>
@@ -87,8 +59,10 @@ const SingleTask = (props) => {
             </div>
             {isEditeModal && (
                 <TaskModal
-                    onHide={() => toggleEditModal(false)}
-                    onSubmit={handleEditeTask}
+                    onHide={props.toggleSingleEditeModal}
+                    onSubmit={(editedTask) =>
+                        props.editeTaskThunk(editedTask, 'singleTask')
+                    }
                     editedTask={singleTask}
                 />
             )}
@@ -97,7 +71,7 @@ const SingleTask = (props) => {
     );
 };
 
-const mapStattoProps = (state) => {
+const mapStateToProps = (state) => {
     const { singleTask, isEditeModal } = state.singleTaskState;
     return {
         singleTask,
@@ -106,10 +80,21 @@ const mapStattoProps = (state) => {
     };
 };
 
-const mapDispatchtoProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        setSingleTaskThunk,
+        setSingleTaskThunk: (id, history) =>
+            dispatch((dispatch) => setSingleTaskThunk(dispatch, id, history)),
+        deleteOneTaskThunk: (id, history) =>
+            dispatch((dispatch) => deleteOneTaskThunk(dispatch, id, history)),
+        editeTaskThunk: (editedTask, page) =>
+            dispatch((dispatch) =>
+                editeTaskThunk(dispatch, editedTask, (page = 'singleTask'))
+            ),
+        toggleSingleEditeModal: () =>
+            dispatch((dispatch) => toggleSingleEditeModal(dispatch)),
+        resetSingleTaskState: () =>
+            dispatch((dispatch) => resetSingleTaskState(dispatch)),
     };
 };
 
-export default connect(mapStattoProps, mapDispatchtoProps)(SingleTask);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask);
