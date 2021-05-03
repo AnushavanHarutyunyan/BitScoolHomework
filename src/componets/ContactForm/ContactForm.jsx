@@ -26,7 +26,12 @@ const forms = [
 ];
 
 const ContactForm = (props) => {
-    const { formData, changeContactForm, sendContactFormThunk } = props;
+    const {
+        formData,
+        loading,
+        changeContactForm,
+        sendContactFormThunk,
+    } = props;
     const firstInput = useRef(null);
     useEffect(() => {
         firstInput.current.focus();
@@ -73,7 +78,7 @@ const ContactForm = (props) => {
                     Add
                 </Button>
             </Form>
-            {/* {loading && <Spinner />} */}
+            {loading && <Spinner />}
         </>
     );
 };
