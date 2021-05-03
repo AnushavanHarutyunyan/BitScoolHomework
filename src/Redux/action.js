@@ -212,6 +212,40 @@ export const toggleStatusThunk = (task) => (dispatch) => {
         });
 };
 
+export const sortOrFilterThunk = (formData) => (dispatch) => {
+    let formDataFilter = { ...formData };
+    window.formDataFilter = formDataFilter;
+    let query = '?';
+    for (let key in formDataFilter) {
+        if (!formDataFilter[key]) delete formDataFilter[key];
+        else {
+            query += key + '=' + formDataFilter[key] + '&';
+        }
+    }
+    if (Object.keys(formDataFilter).length) {
+        dispatch({ type: types.SET_OR_REMOVE_LOADING, isLoading: true }); //Loading Started
+        fetch(`${API_HOST}/task${query.slice(0, query.length - 1)}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) throw data.error;
+                dispatch({ type: types.SET_TASKS, data });
+                dispatch({ type: types.RESET_SEARCH_STATE });
+            })
+            .catch((error) => {
+                dispatch({
+                    type: types.SET_ERROR_MESSAGE,
+                    error: error.message,
+                });
+            })
+            .finally(() => {
+                dispatch({
+                    type: types.SET_OR_REMOVE_LOADING,
+                    isLoading: false,
+                }); //Loading Ended
+            });
+    }
+};
+
 export const toggleSingleEditeModal = (dispatch) => {
     dispatch({ type: types.TOGGLE_SINGLE_TASK_EDIT_MODAL });
 };
@@ -222,4 +256,15 @@ export const resetSingleTaskState = (dispatch) => {
 
 export const changeContactForm = (target) => (dispatch) => {
     dispatch({ type: types.CHANGE_CONTACT_FORM, target });
+};
+
+export const setDropDownValueForSearch = (dropDown, value) => (dispatch) => {
+    dispatch({ type: types.SET_DROPDOWN_VARIANT, dropDown, value });
+};
+export const changeSearchValue = (target) => (dispatch) => {
+    dispatch({ type: types.CHANGE_SEARCH_VALUE, target });
+};
+
+export const setDate = (name, date) => (dispatch) => {
+    dispatch({ type: types.SET_DATE, name, date });
 };
