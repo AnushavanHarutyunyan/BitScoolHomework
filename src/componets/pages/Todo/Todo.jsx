@@ -12,6 +12,7 @@ import {
     deleteOneTaskThunk,
     deleteCheckedTasksThunk,
     editeTaskThunk,
+    toggleStatusThunk,
 } from '../../../Redux/action';
 import types from '../../../Redux/acitonTypes';
 
@@ -33,10 +34,15 @@ const Todo = (props) => {
         toggleOpenConfirm,
         toggleCheckTask,
         editedTask,
+        errorMessage,
+        toggleStatus,
     } = props;
 
     return (
         <Container>
+            <Row>
+                <h1>{errorMessage}</h1>
+            </Row>
             {loading && <SpinnerComp className={styles.spinner} />}
             <Row>
                 <Col className={styles.addTaskBtn}>
@@ -62,6 +68,7 @@ const Todo = (props) => {
                                     toggleAddEdite={
                                         props.toggleOpenAddTaskModal
                                     }
+                                    toggleStatus={toggleStatus}
                                 />
                             </Col>
                         );
@@ -127,6 +134,7 @@ const mapStateToProps = (state) => {
         isOpenAddTaskModal: state.todoState.isOpenAddTaskModal,
         isOpenConfirm: state.todoState.isOpenConfirm,
         editedTask: state.todoState.editedTask,
+        errorMessage: state.globalState.errorMessage,
     };
 };
 
@@ -146,6 +154,9 @@ const mapDispatchtoProps = (dispatch) => {
         },
         toggleCheckTask: (_id) => {
             dispatch({ type: types.TOGGLE_CHECK_TASK, _id });
+        },
+        toggleStatus: (task) => {
+            dispatch(toggleStatusThunk(task));
         },
         deleteCheckedTask: (checkedTasks) => {
             dispatch((dispatch) =>

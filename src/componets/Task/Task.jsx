@@ -3,7 +3,12 @@ import { memo } from 'react';
 import { Button } from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import {
+    faTrash,
+    faEdit,
+    faCheckSquare,
+    faHourglassHalf,
+} from '@fortawesome/free-solid-svg-icons';
 import Form from 'react-bootstrap/Form';
 import styles from './Task.module.css';
 import { PropTypes } from 'prop-types';
@@ -15,6 +20,7 @@ const Task = ({
     checkedTasks,
     isChecked,
     EditedTask,
+    toggleStatus,
 }) => {
     const handleDelet = () => {
         deletItem(task._id);
@@ -58,6 +64,19 @@ const Task = ({
             >
                 <FontAwesomeIcon icon={faTrash} />
             </Button>
+            <Button
+                variant={task.status === 'done' ? 'success' : 'warning'}
+                className={styles.btn}
+                onClick={() => toggleStatus(task)}
+            >
+                <FontAwesomeIcon
+                    icon={
+                        task.status === 'active'
+                            ? faHourglassHalf
+                            : faCheckSquare
+                    }
+                />
+            </Button>
         </div>
     );
 };
@@ -72,6 +91,7 @@ Task.propTypes = {
     checkedTasks: PropTypes.instanceOf(Set).isRequired,
     isChecked: PropTypes.bool.isRequired,
     EditedTask: PropTypes.func.isRequired,
+    toggleStatus: PropTypes.func.isRequired,
 };
 
 export default withRouter(memo(Task));

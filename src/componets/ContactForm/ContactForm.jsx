@@ -1,14 +1,10 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
-import {
-    isRequired,
-    maxLength,
-    minLength,
-    validateEmail,
-} from '../../utils/validator';
+import { changeContactForm, sendContactFormThunk } from '../../Redux/action';
 import styles from '../ContactForm/contactform.module.css';
+import { withRouter } from 'react-router';
 
 const forms = [
     {
@@ -29,141 +25,73 @@ const forms = [
     },
 ];
 
-const API_HOST = 'http://localhost:3001';
-const maxLength40 = maxLength(40);
-const minLength3 = minLength(3);
-class ContactForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: {
-                valid: false,
-                error: null,
-                value: '',
-            },
-            email: {
-                valid: false,
-                error: null,
-                value: '',
-            },
-            message: {
-                valid: false,
-                error: null,
-                value: '',
-            },
-            loading: false,
-            errorMessage: '',
-        };
-    }
-
-    handleSubmit = () => {
-        const { name, email, message } = this.state;
-        const formData = { name, email, message };
-
-        for (let key in formData) {
-            if (
-                typeof formData[key] === 'object' &&
-                formData[key].hasOwnProperty('value')
-            ) {
-                formData[key] = formData[key].value;
-            } else {
-                delete formData[key];
-            }
-        }
-
-        if (!name.value.trim() || !email.value.trim() || !message.value.trim())
-            return;
-
-        this.setState({ loading: true, errorMessage: null });
-
-        fetch(`${API_HOST}/form`, {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.error) throw data.error;
-                console.log(this.props);
-                this.props.history.push('/');
-            })
-            .catch((err) => {
-                let errorMessage;
-                if (err.status === 422) {
-                    errorMessage = err.message.slice(11);
-                }
-                this.setState({
-                    loading: false,
-                    errorMessage: errorMessage,
-                });
-                console.log(err);
-            });
-    };
-
-    handleChange = (e) => {
-        const { name, value } = e.target;
-        let valid = true;
-
-        let error =
-            isRequired(value) ||
-            maxLength40(value) ||
-            minLength3(value) ||
-            (name === 'email' && validateEmail(value));
-        if (error) {
-            valid = false;
-        }
-
-        this.setState({
-            [name]: {
-                valid: valid,
-                error: error,
-                value: value,
-            },
-        });
-    };
-
-    render() {
-        const { loading } = this.state;
-        const formJSX = forms.map((item, indx) => {
-            return (
-                <Form.Group key={indx}>
-                    <Form.Control
-                        className={styles.textarea}
-                        name={item.name}
-                        type={item.type}
-                        value={this.state[item.name].value}
-                        onChange={this.handleChange}
-                        placeholder={item.placeholder}
-                        as={item.as ? item.as : undefined}
-                    />
-                    <Form.Text className={styles.validMessage}>
-                        {this.state[item.name].error}
-                        <h4>{this.state.errorMessage}</h4>
-                    </Form.Text>
-                </Form.Group>
-            );
-        });
+const ContactForm = (props) => {
+    const { formData, changeContactForm, sendContactFormThunk } = props;
+    const firstInput = useRef(null);
+    useEffect(() => {
+        firstInput.current.focus();
+    }, []);
+    const formJSX = forms.map((item, indx) => {
         return (
+            <Form.Group key={indx}>
+                <Form.Control
+                    ref={indx === 0 ? firstInput : null}
+                    className={styles.textarea}
+                    name={item.name}
+                    type={item.type}
+                    value={formData[item.name].value}
+                    onChange={(e) => changeContactForm(e.target)}
+                    placeholder={item.placeholder}
+                    as={item.as ? item.as : undefined}
+                />
+                <Form.Text className={styles.validMessage}>
+                    {formData[item.name].error}
+                </Form.Text>
+            </Form.Group>
+        );
+    });
+
+    return (
+        <>
             <Form
                 onSubmit={(e) => e.preventDefault()}
                 className={styles.form}
                 noValidate
             >
-                {loading && <Spinner />}
+                <Form.Text className={styles.validMessage}>
+                    {/* <h4>{errorMessage}</h4> */}
+                </Form.Text>
                 {formJSX}
                 <Button
                     variant="primary"
                     type="submit"
                     className={styles.addBtn}
-                    onClick={this.handleSubmit}
+                    onClick={() =>
+                        sendContactFormThunk(formData, props.history)
+                    }
                 >
                     Add
                 </Button>
             </Form>
-        );
-    }
-}
+            {/* {loading && <Spinner />} */}
+        </>
+    );
+};
 
-export default withRouter(ContactForm);
+const mapStateToProps = (state) => {
+    const { name, email, message } = state.contactState;
+    return {
+        formData: { name, email, message },
+        loading: state.globalState.loading,
+    };
+};
+
+const mapDispatchToProps = {
+    changeContactForm,
+    sendContactFormThunk,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(ContactForm));

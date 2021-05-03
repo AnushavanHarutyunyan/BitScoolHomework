@@ -6,7 +6,6 @@ const initialState = {
 };
 
 const singleTaskReducer = (state = initialState, action) => {
-    console.log('sigleReducer', action);
     switch (action.type) {
         case types.SET_SINGLE_TASK: {
             return {

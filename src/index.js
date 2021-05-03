@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
 //import './index.css'
 import App from './App';
 import store from './Redux/store';
