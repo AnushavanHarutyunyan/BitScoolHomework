@@ -11,7 +11,7 @@ const globalReducer = (state = initialState, action) => {
         case types.SET_OR_REMOVE_LOADING: {
             return {
                 ...state,
-                loading: action.isloading,
+                loading: action.isLoading,
                 errorMessage: action.isLoading ? '' : state.errorMessage,
                 successMessage: action.isLoading ? '' : state.successMessage,
             };

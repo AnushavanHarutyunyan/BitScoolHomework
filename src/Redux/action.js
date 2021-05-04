@@ -1,5 +1,5 @@
 import types from './acitonTypes';
-const API_HOST = 'http://localhost:3001';
+const API_HOST = process.env.REACT_APP_API_URL;
 
 export function SetTaskThunk(dispatch) {
     dispatch({ type: types.SET_OR_REMOVE_LOADING, isLoading: true });

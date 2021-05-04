@@ -14,8 +14,6 @@ import {
 } from '../../Redux/action';
 import styles from './singletask.module.css';
 
-const API_HOST = 'http://localhost:3001';
-
 const SingleTask = (props) => {
     const { id } = props.match.params;
     const { history, setSingleTaskThunk, resetSingleTaskState } = props;
