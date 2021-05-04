@@ -48,7 +48,7 @@ const SingleTask = (props) => {
                         variant="danger"
                         className={styles.btn}
                         onClick={() =>
-                            deleteOneTaskThunk(singleTask._id, history)
+                            props.deleteOneTaskThunk(singleTask._id, history)
                         }
                     >
                         <FontAwesomeIcon icon={faTrash} />

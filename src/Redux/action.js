@@ -96,7 +96,8 @@ export const deleteCheckedTasksThunk = (dispatch, checkedTasks) => {
 };
 
 export const editeTaskThunk = (dispatch, editedTask, page = 'todo') => {
-    dispatch({ type: types.SET_OR_REMOVE_LOADING, isLoading: false });
+    console.log('dispatch', dispatch, 'editedTask', editedTask, page);
+    dispatch({ type: types.SET_OR_REMOVE_LOADING, isLoading: true });
     fetch(`${API_HOST}/task/${editedTask._id}`, {
         method: 'PUT',
         body: JSON.stringify(editedTask),
@@ -114,7 +115,7 @@ export const editeTaskThunk = (dispatch, editedTask, page = 'todo') => {
                     successMessage: 'Task was edited successfully',
                 });
             } else if (page === 'singleTask') {
-                dispatch({ type: types.SET_SINGLE_TASKS, data });
+                dispatch({ type: types.SET_SINGLE_TASK, data });
                 dispatch({
                     type: types.SET_SUCCES_MESSAGE,
                     successMessage: 'Task was edited successfully',
