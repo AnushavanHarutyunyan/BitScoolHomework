@@ -105,7 +105,7 @@ const Search = (props) => {
                         name="search"
                     />
                 </Form.Group>
-                <Form.Group className="mt-3 d-flex justify-content-center">
+                <Form.Group className="mt-3 d-flex justify-content-end">
                     <DropdownButton
                         title={
                             sort
@@ -129,6 +129,15 @@ const Search = (props) => {
                     >
                         {statusItems}
                     </DropdownButton>
+                    <div className="ml-5 text-right">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            onClick={() => sortOrFilterThunk(props.state)}
+                        >
+                            Submit
+                        </Button>
+                    </div>
                 </Form.Group>
                 {/* <Form.Group>
                     Created Late
@@ -158,16 +167,6 @@ const Search = (props) => {
                         onChange={(date) => setDate('complete_gte', date)}
                     />
                 </Form.Group> */}
-
-                <Form.Group className="mt-3">
-                    <Button
-                        variant="primary"
-                        type="submit"
-                        onClick={() => sortOrFilterThunk(props.state)}
-                    >
-                        Submit
-                    </Button>
-                </Form.Group>
             </Form>
         </div>
     );
