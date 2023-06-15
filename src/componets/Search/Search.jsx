@@ -130,7 +130,7 @@ const Search = (props) => {
                         {statusItems}
                     </DropdownButton>
                 </Form.Group>
-                <Form.Group>
+                {/* <Form.Group>
                     Created Late
                     <DatePicker
                         selected={create_lte}
@@ -138,7 +138,7 @@ const Search = (props) => {
                     />
                 </Form.Group>
                 <Form.Group>
-                    Created Greater
+                    <Form.Label>Created Greater</Form.Label>
                     <DatePicker
                         selected={create_gte}
                         onChange={(date) => setDate('create_gte', date)}
@@ -167,7 +167,7 @@ const Search = (props) => {
                     >
                         Submit
                     </Button>
-                </Form.Group>
+                </Form.Group> */}
             </Form>
         </div>
     );
