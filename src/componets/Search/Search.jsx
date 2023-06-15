@@ -157,7 +157,7 @@ const Search = (props) => {
                         selected={complete_gte}
                         onChange={(date) => setDate('complete_gte', date)}
                     />
-                </Form.Group>
+                </Form.Group> */}
 
                 <Form.Group className="mt-3">
                     <Button
@@ -167,7 +167,7 @@ const Search = (props) => {
                     >
                         Submit
                     </Button>
-                </Form.Group> */}
+                </Form.Group>
             </Form>
         </div>
     );
